@@ -1,0 +1,61 @@
+id: dispatch_request
+name: 请求路由
+version: 1
+description: >
+  在收到人类请求时，先判定意图并决定是否调用已有协议，
+  避免绕过标准流程；对命令类请求列出候选协议并征求用户选择，
+  若无匹配则回退到普通对话。
+
+triggers:
+  - user_intent: "dispatch_request"
+  - user_utterance_contains:
+      - "帮我处理这个请求"
+      - "看看这个需求走哪个协议"
+      - "按规范帮我办这件事"
+      - "要用哪个协议来做？"
+      - "按流程处理这个需求"
+
+preconditions:
+  - "用户提出了一条请求或命令，需要 AI 选择处理路径。"
+  - "langos/runtime/protocols/index.yaml 可用，用于检索候选协议。"
+
+outputs:
+  - "意图分类结果：询问/信息咨询 或 命令/请求。"
+  - "候选协议列表（如有）：id、name、简述、触发表达。"
+  - "用户确认后的下一步：进入某协议执行或按普通对话继续。"
+
+steps:
+  - id: classify_intent
+    type: ANALYZE_REQUEST
+    instruction: >
+      判断当前输入是“询问/信息咨询”还是“命令/请求”。
+      - 若为询问/信息咨询，直接按普通对话回答，并在收尾确认后结束本协议。
+      - 若为命令/请求，进入下一步协议检索。
+
+  - id: fetch_candidates
+    type: ANALYZE_PROTOCOLS
+    instruction: >
+      以 langos/runtime/protocols/index.yaml 为准，匹配 1–3 个可能相关的协议（id/name/一句话描述）。
+      向用户展示候选列表，并询问是否使用其中某个协议处理本次请求；
+      如无匹配，明确说明将按普通对话继续。
+
+  - id: decide_path
+    type: ASK_USER
+    instruction: >
+      根据候选列表请用户做选择：
+      - 选择某协议：明确写出协议 id/name，说明将切换到该协议执行后续步骤；
+      - 不使用协议：说明将按普通对话继续，但仍保持确认优先；
+      - 若用户犹豫，可简要复述各候选的适用场景再请其选择。
+
+  - id: handoff_or_continue
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      用简短列表确认：意图分类结果、候选协议（如有）、用户选择、下一步处理方式。
+      - 若进入某协议：结束本协议，按所选协议的步骤继续；
+      - 若普通对话：提醒仍遵守确认优先和中文沟通的约束。
+
+safety:
+  - "对话与说明全程使用中文，代码/命令/路径保持原文。"
+  - "不得要求用户提供协议文件路径；仅以 index.yaml 为协议来源。"
+  - "未经用户确认，不得直接执行任何协议步骤或写入内容。"
+  - "缺少匹配协议时不得编造，需说明并回退到普通对话。"

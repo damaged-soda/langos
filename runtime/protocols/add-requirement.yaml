@@ -1,0 +1,82 @@
+id: add_requirement
+name: 添加新需求规格文档
+version: 1
+description: >
+  将关于新功能/需求的对话整理为结构化的规格文档，存放到 workspace/specs/ 下，
+  便于后续开发、协作与复用。
+
+triggers:
+  - user_intent: "add_new_requirement"
+  - user_utterance_contains:
+      - "添加新需求"
+      - "帮我写一个需求 spec"
+      - "我想做一个新功能"
+      - "帮我把这个需求梳理成文档"
+
+preconditions:
+  - "用户愿意提供需求的基本信息（目标/范围/涉及 repo 或模块）。"
+  - "允许在 workspace/specs/ 下创建或更新文档。"
+
+outputs:
+  - "文档存放路径与文件名建议（遵守 langos/meta/conventions.md）。"
+  - "需求规格草稿：背景/目标、范围/不含、功能/非功能、依赖/影响、接口/数据、验收标准、时间/任务、风险/待决。"
+  - "待补信息/待决问题列表。"
+
+steps:
+  - id: clarify_need
+    type: ASK_USER
+    instruction: >
+      澄清并确认：1）需求名称和一句话描述，2）目标与价值，3）涉及的 repo/模块，
+      4）范围与不包含的内容，5）时间或优先级，6）相关人/干系人，7）已知约束（合规/安全/性能等）。
+      用中文小结理解，待用户确认后继续。
+
+  - id: decide_path
+    type: PLAN_DOCS
+    instruction: >
+      按规范建议存放目录与文件名，例如：
+      - 单 repo：workspace/specs/<repo>/YYYYMM-short-name-spec.md
+      - 跨 repo：workspace/specs/cross-repo/YYYYMM-short-name-spec.md
+      将路径和命名建议展示给用户确认。
+
+  - id: outline_sections
+    type: PLAN_DOCS
+    instruction: >
+      提出文档框架并请用户确认/调整，建议章节：
+      - 背景与目标
+      - 范围 / 不包含
+      - 功能需求（分要点/子功能）
+      - 非功能（性能/可靠性/安全/合规等）
+      - 依赖与影响（其他系统/团队/接口）
+      - 接口与数据（如已有初步信息）
+      - 验收标准（用例/数据/度量）
+      - 时间与任务（里程碑或行动项）
+      - 风险与待决
+
+  - id: gather_details
+    type: ASK_USER
+    instruction: >
+      针对缺口逐项提问并整理要点，尤其是：
+      - 关键功能/场景/边界
+      - 数据/接口需求，输入输出及约束
+      - 非功能指标或约束
+      - 验收标准与验证方式
+      将收集到的信息按章节要点列出，展示给用户确认。
+
+  - id: draft_spec
+    type: DRAFT_DOCS
+    instruction: >
+      按确认的框架在中文撰写规格草稿，遵守 langos/meta/conventions.md。
+      覆盖：背景/目标、范围/不含、功能/非功能、依赖/影响、接口/数据、验收标准、时间/任务、风险/待决。
+      展示草稿供用户审阅，必要时迭代。
+
+  - id: finalize
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      用简要列表确认：1）存放路径与文件名，2）草稿主要内容，3）未决待补项。
+      未经用户确认，不得写入或覆盖文件；如用户选择手动写入，提供可复制片段。
+
+safety:
+  - "对话与输出全程使用中文，代码/路径保持原文。"
+  - "缺信息时先提问，不得编造需求细节。"
+  - "未经确认不得直接写入或覆盖文件，可先提供片段。"
+  - "路径与命名遵守 langos/meta/conventions.md，不要求用户提供协议文件路径。"

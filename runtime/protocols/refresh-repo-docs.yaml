@@ -1,0 +1,68 @@
+id: refresh_repo_docs
+name: 更新项目说明与修订文档
+version: 1
+description: >
+  当某个 repo 的代码发生变化时，对照现有文档与实际实现，
+  列出差异并协助修订 overview/architecture/ai-notes 等文档。
+
+triggers:
+  - user_intent: "refresh_repo_docs"
+  - user_utterance_contains:
+      - "这个项目的文档可能过时了"
+      - "有人改了代码，文档需要更新"
+      - "帮我检查这个 repo 的文档"
+      - "对照代码把文档修一修"
+
+preconditions:
+  - "用户提供目标 repo（相对 work/）及希望覆盖的文档类型或变更点。"
+  - "能访问到现有文档（overview/architecture/data-flow/ai-notes/README 等）。"
+
+outputs:
+  - "待核对的文档清单（已存在/缺失标记）。"
+  - "过时或缺漏的差异列表（功能、接口、依赖、配置、数据流等）。"
+  - "经确认的更新计划与修改草稿（或可复制片段）。"
+  - "未决待办项（需要进一步信息或后续补充）。"
+
+steps:
+  - id: clarify_scope
+    type: ASK_USER
+    instruction: >
+      澄清并确认：1）目标 repo（相对 work/），2）近期变更点或希望关注的模块，
+      3）优先级/时效性，4）需要覆盖的文档类型（overview/architecture/data-flow/ai-notes/README）。
+      用中文小结理解，待用户确认后继续。
+
+  - id: inventory_docs
+    type: ANALYZE_DOCS
+    instruction: >
+      盘点目标 repo 相关文档，列出已找到的 overview/architecture/data-flow/ai-notes/README 路径，
+      缺失的标记为 TODO。向用户展示清单并确认关注范围。
+
+  - id: find_gaps
+    type: ANALYZE_REQUEST
+    instruction: >
+      根据用户提供的变更信息或已知代码改动，列出文档可能过时/缺漏的点，
+      包括：功能/接口/依赖/配置/数据流/风险等。必要时提出澄清问题。
+
+  - id: plan_updates
+    type: PLAN_DOCS
+    instruction: >
+      给出更新计划：哪些文件需要修改/补充、主要要点或段落。
+      以清单形式展示并征求用户确认，未确认前不起草。
+
+  - id: draft_updates
+    type: DRAFT_DOCS
+    instruction: >
+      按确认的计划起草文档修改或新增片段，遵守 langos/meta/conventions.md（中文、结构、命名）。
+      覆盖已识别的差异点，展示草稿供用户审阅。
+
+  - id: finalize
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      用简要列表总结：1）拟修改的文件及要点，2）草稿/片段，3）未决待办。
+      未经用户确认，不得写入或覆盖文件；如用户选择手动写入，提供可复制的片段。
+
+safety:
+  - "对话与输出全程使用中文，代码/路径保持原文。"
+  - "不编造未知的业务或实现；信息不足时先提问澄清。"
+  - "未经确认不得直接写入或覆盖文件，必要时仅提供片段。"
+  - "路径与命名遵守 langos/meta/conventions.md。"

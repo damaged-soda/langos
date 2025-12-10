@@ -1,0 +1,75 @@
+id: add_repo_index
+name: 添加新项目索引
+version: 1
+description: >
+  为 work/ 下新出现、尚未登记的仓库创建索引和基础说明文档，
+  确保人类与 AI 能快速了解仓库用途、结构与注意事项。
+
+triggers:
+  - user_intent: "add_new_project"
+  - user_utterance_contains:
+      - "添加新项目"
+      - "这个 repo 还没在 workspace-docs 里建说明"
+      - "帮我把这个项目加到索引里"
+      - "给这个仓库写一套说明"
+
+preconditions:
+  - "用户提供或确认仓库目录名（相对 work/）及仓库用途。"
+  - "workspace/repos/INDEX.md 中尚无该仓库条目，或用户明确要更新现有条目。"
+
+outputs:
+  - "workspace/repos/INDEX.md 的新增/更新片段：仓库名、简述、链接。"
+  - "workspace/repos/<repo>/overview.md 草稿（必选）；可选 architecture.md、ai-notes.md 草稿。"
+  - "待补充信息的 TODO（依赖、数据流、接口等）。"
+
+steps:
+  - id: clarify_repo
+    type: ASK_USER
+    instruction: >
+      澄清并确认：1）仓库目录名（相对 work/），2）用途/核心功能，3）主要模块/语言/框架，
+      4）当前状态（成熟/早期/孵化），5）与其他仓库关系/接口，
+      6）是否需要 architecture.md / ai-notes.md 等额外文档。
+      用中文小结理解，待用户确认后继续。
+
+  - id: check_index
+    type: ANALYZE_DOCS
+    instruction: >
+      查看 workspace/repos/INDEX.md（如存在），确认是否已有该仓库条目：
+      - 已存在：说明情况并询问是更新还是跳过；
+      - 不存在：记录应新增的显示名、相对路径、1-2 句话描述。
+
+  - id: plan_docs
+    type: PLAN_DOCS
+    instruction: >
+      列出需要创建/更新的文件清单并说明目的，至少包含：
+      - workspace/repos/<repo>/overview.md（必选）；
+      - 可选 workspace/repos/<repo>/architecture.md；
+      - 可选 workspace/repos/<repo>/ai-notes.md。
+      将清单与要点展示给用户确认。
+
+  - id: draft_docs
+    type: DRAFT_DOCS
+    instruction: >
+      按确认的清单起草内容，遵守 langos/meta/conventions.md（中文、结构、命名）。
+      建议覆盖：仓库简介、核心模块、主要依赖/版本、运行/测试入口、
+      与其他 repo 的接口或数据流、当前风险或待办。
+      展示草稿请用户审阅。
+
+  - id: draft_index_snippet
+    type: PLAN_INDEX_UPDATE
+    instruction: >
+      生成建议追加到 workspace/repos/INDEX.md 的 Markdown 片段：
+      - 使用列表项或表格，包含仓库名、简要描述、链接（workspace/repos/<repo>/overview.md）。
+      展示给用户确认，不假设已写入。
+
+  - id: finalize
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      用简要列表确认：1）要写入/更新的文件路径，2）INDEX 片段内容，3）未决待办。
+      仅在用户确认后再执行实际写入；如用户选择手动写入，提供必要片段以便复制。
+
+safety:
+  - "对话与输出全程使用中文，代码/路径保持原文。"
+  - "缺少信息时先提问澄清，不得编造仓库细节。"
+  - "未经用户确认不得直接写入或覆盖文件。"
+  - "路径与命名遵守 langos/meta/conventions.md，不要求用户提供协议文件路径。"

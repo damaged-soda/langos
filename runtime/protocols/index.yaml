@@ -1,0 +1,67 @@
+protocols:
+  - id: add_protocol
+    name: 添加指令
+    file: add-protocol.yaml
+    description: >
+      通过与用户对话，定义、创建或修改一条 AI 协议（YAML 文件），
+      并在用户确认后将该协议登记到 index.yaml 中，供后续自然语言调用使用。
+    triggers:
+      intent: add_new_protocol
+      utterance_examples:
+        - "添加一个新的 AI 协议"
+        - "帮我定义一条新的指令"
+        - "我想新增一种操作流程"
+        - "我们给 AI 多加一个能力"
+  - id: dispatch_request
+    name: 请求路由
+    file: dispatch-request.yaml
+    description: >
+      当收到人类请求时，先判定意图并决定是否调用已有协议，
+      对命令类请求列出候选协议并征求用户选择，若无匹配则回退普通对话。
+    triggers:
+      intent: dispatch_request
+      utterance_examples:
+        - "帮我处理这个请求"
+        - "看看这个需求走哪个协议"
+        - "按规范帮我办这件事"
+        - "要用哪个协议来做？"
+        - "按流程处理这个需求"
+  - id: add_repo_index
+    name: 添加新项目索引
+    file: add-repo-index.yaml
+    description: >
+      当 work 目录下出现一个新的 repo，且尚未在 workspace-docs 中建立索引时，
+      按固定流程为该 repo 建立说明文档和索引。
+    triggers:
+      intent: add_new_project
+      utterance_examples:
+        - "添加新项目"
+        - "这个 repo 还没在 workspace-docs 里建说明"
+        - "帮我把这个项目加到索引里"
+        - "给这个仓库写一套说明"
+  - id: add_requirement
+    name: 添加新需求规格文档
+    file: add-requirement.yaml
+    description: >
+      将关于新功能/新需求的对话整理为一份结构化的规格文档，
+      存放到 workspace/specs/ 下，供后续开发和复用。
+    triggers:
+      intent: add_new_requirement
+      utterance_examples:
+        - "添加新需求"
+        - "帮我写一个需求 spec"
+        - "我想做一个新功能"
+        - "帮我把这个需求梳理成文档"
+  - id: refresh_repo_docs
+    name: 更新项目说明与修订文档
+    file: refresh-repo-docs.yaml
+    description: >
+      当某个 repo 的代码已经发生变化时，对比现有文档与实际实现，
+      列出差异并协助用户修订 overview/architecture/ai-notes 等文档。
+    triggers:
+      intent: refresh_repo_docs
+      utterance_examples:
+        - "这个项目的文档可能过时了"
+        - "有人改了代码，文档需要更新"
+        - "帮我检查这个 repo 的文档"
+        - "对照代码把文档修一修"

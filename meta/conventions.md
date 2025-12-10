@@ -1,6 +1,6 @@
 # 基础规范（conventions）
 
-本文件定义 `workspace-docs` 的基础规范，适用于：
+本文件定义业务文档库的基础规范（业务目录可自定，如 `workspace/` 或独立 docs 仓），适用于：
 
 - 人类在这里新增或修改文档；
 - AI 在这里读取、生成、修改文档；
@@ -38,7 +38,7 @@
 1. **统一使用 Markdown**  
    - 文档统一使用 `.md`；配置/协议类使用 `.yaml`（例如 `langos/runtime/protocols/*.yaml`）。
 2. **目录职责**  
-   - 顶层目录含义以 `workspace-docs/README.md` 为准；子目录按语义清晰拆分（如 `repo1/`、`trading/`、`cross-repo/` 等）。
+   - 顶层目录含义以业务文档库的 README/索引为准（若有）；子目录按语义清晰拆分（如 `repo1/`、`trading/`、`cross-repo/` 等）。
 3. **不要在同一层放过多文件**  
    - 若某目录下文件超过 ~20 个，考虑再按子主题拆分；如 `workspace/specs/repo1/` 可按年份或模块再拆。
 
@@ -82,7 +82,7 @@
 2. **段落与列表**：简短段落、一段一事；步骤/要点优先用列表。
 3. **代码与配置片段**：使用代码块，例如：
    ```bash
-   mkdir -p workspace-docs/langos/runtime/protocols
+   mkdir -p langos/runtime/protocols
    ```
    ```yaml
    id: add_protocol
@@ -116,16 +116,16 @@
 ## 8. 实际使用建议
 
 - 自己写文档：对照本文件逐步养成习惯，无需一次做到完美。
-- 让 AI 写文档：可以先声明“请遵守 `workspace-docs/langos/meta/conventions.md` 来写”。
+- 让 AI 写文档：可以先声明“请遵守 `langos/meta/conventions.md` 来写”。
 - 发现常见重复任务：除了写文档规范外，可考虑用 `add_protocol` 将流程固化到 `langos/runtime/protocols/`。
 
 这样，`conventions.md` 提供基础规则，`protocols/*.yaml` 提供具体流程，两者配合使用。
 
 ---
 
-## 9. workspace-docs 仓库的迭代规范
+## 9. 文档库的迭代规范
 
-当需要调整 `workspace-docs` 本身的结构、规范或协议时，参考以下约定，避免越改越乱。
+当需要调整业务文档库本身的结构、规范或协议时，参考以下约定，避免越改越乱。
 
 ### 9.1 基本原则
 
@@ -137,7 +137,7 @@
 ### 9.2 常见改动类型
 
 **新增文档/目录**  
-- 判断顶层归属（`workspace/repos` / `workspace/projects` / `workspace/domain` / `workspace/specs` / `workspace/adr` 等）。  
+- 判断顶层归属（示例：`workspace/repos` / `workspace/projects` / `workspace/domain` / `workspace/specs` / `workspace/adr` 等）。  
 - 命名按本文件；有索引则同步更新（如 `workspace/repos/INDEX.md`、`protocols/index.yaml`）。
 
 **修改现有文档（非结构性）**  
@@ -145,8 +145,8 @@
 
 **结构调整/目录重构**  
 - 先给出重构前后对比草案，确认后再移动文件。  
-- 同步更新：`workspace-docs/README.md`、相关索引（如 `workspace/repos/INDEX.md`、`protocols/index.yaml`）、其它引用。  
-- 较大调整建议写 ADR（如 `workspace/adr/00xx-refactor-workspace-docs-structure.md`）。
+- 同步更新：文档库 README 或索引、相关索引（如 `workspace/repos/INDEX.md`、`protocols/index.yaml`）、其它引用。  
+- 较大调整建议写 ADR（如 `workspace/adr/00xx-refactor-docs-structure.md`）。
 
 **协议与索引演进**  
 - 协议：`langos/runtime/protocols/<id>.yaml`；索引：`langos/runtime/protocols/index.yaml`。  
@@ -159,7 +159,7 @@
 
 ### 9.3 AI 参与迭代的标准流程
 
-1. 信息收集：询问痛点（难查？难改？AI 用不顺？），阅读 `workspace-docs/README.md`、`langos/meta/*`、`langos/runtime/*` 等。
+1. 信息收集：询问痛点（难查？难改？AI 用不顺？），阅读文档库 README（若有）、`langos/meta/*`、`langos/runtime/*` 等。
 2. 现状总结：简要总结当前结构/规范状态，与痛点关联。
 3. 备选方案：给出几种路径（小增补/轻度重组/大重构），说明优缺点与影响范围。
 4. 用户选择：用户定方案；不确定时建议从最小可行改动开始。
@@ -168,4 +168,4 @@
 
 ---
 
-遵守以上规范，可让 `workspace-docs` 成为一个可持续演进、可控复杂度的知识库，人类和 AI 都能高效协作。
+遵守以上规范，可让业务文档库成为一个可持续演进、可控复杂度的知识库，人类和 AI 都能高效协作。

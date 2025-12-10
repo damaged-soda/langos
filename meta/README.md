@@ -1,14 +1,23 @@
 # langos/meta
 
-`langos/meta` 存放整个 `workspace-docs` 的“基础规范”和“元信息”，是人类和 AI 在使用本知识库前必须先了解的内容。
+`langos/meta` 存放这套自然语言编程 OS 的“基础规范”和“元信息”，是人类和 AI 在使用自选业务文档库前必须先了解的内容。
 
 它回答的问题：
 
-- 这个知识库（以及“自然语言编程操作系统”）的愿景、原则与分层是什么？
+- 这套知识库/文档库（以及“自然语言编程操作系统”）的愿景、原则与分层是什么？
 - 文档应该如何命名、编写、放置？
 - AI 在这里工作时，有哪些通用的行为约定与确认要求？
 
-简言之：**`workspace-docs` 是业务知识中心，`langos/meta` 是使用手册和规则说明。**
+简言之：**业务知识库目录由你指定，`langos/meta` 是使用手册和规则说明。**
+
+---
+
+## 快速导航
+
+- 顶层目录地图与最小使用路径：见 `langos/README.md`（说明 meta / runtime 分层、业务文档不在本仓）。
+- AI 初始化必读：`langos/runtime/guidelines.md`、`langos/runtime/runtime.md`、`langos/runtime/protocols/index.yaml`。
+- 启动对话提示：`langos/runtime/startup.md`，按模式（学习/治理/业务开发）切入。
+- 业务资产位置：由你指定的业务文档目录/仓库（例：单独 docs 仓、工作区的 `workspace/` 目录等），与本仓分离。
 
 ---
 
@@ -42,7 +51,7 @@
 
 可在对话中明确要求 AI：
 
-> “在这次对话里，请你遵守 `workspace-docs/langos/meta/conventions.md` 的约定来行动。”
+> “在这次对话里，请你遵守 `langos/meta/conventions.md` 的约定来行动。”
 
 ---
 
@@ -50,7 +59,7 @@
 
 - `langos/meta/`：规则与约定，定义“怎么玩”。
 - `langos/runtime/`：接口与执行层，定义对话规范、路由与协议（“怎么玩”的具体流程）。
-- `workspace/`：业务资产层，包含仓库说明、项目、需求规格、领域知识、ADR、归档等。
+- 业务资产层：你指定的业务文档目录/仓库（如 `workspace/`、`docs/` 或独立 repo），包含仓库说明、项目、需求规格、领域知识、ADR、归档等。
 
 其中，**`langos/meta` 和 `langos/runtime` 对 AI 影响最大**：
 - `meta` 提供通用规范（写文档、命名、提问、确认等）；
@@ -60,13 +69,12 @@
 
 ## 4. AI 初始化时的阅读要求（概览）
 
-详细清单在 `workspace-docs/README.md`，这里强调与 `langos/meta` 的关系：
-
-1. 阅读 `workspace-docs/README.md`，理解整体结构与分层。
-2. 阅读本文件 `langos/meta/README.md`，理解 `meta` 的定位。
-3. 阅读 `langos/meta/conventions.md`，掌握基础规范。
+AI 初始化时，通常按以下顺序阅读（若存在对应文件）：  
+1. 业务文档库的 README（若有），理解整体结构与分层。  
+2. 本文件 `langos/meta/README.md`，理解 `meta` 的定位。  
+3. `langos/meta/conventions.md`，掌握基础规范。  
 4. 视需要阅读：  
-   - `workspace/repos/INDEX.md`（仓库列表）  
+   - 业务文档库中的仓库索引（如 `workspace/repos/INDEX.md` 等）  
    - `langos/runtime/guidelines.md`  
    - `langos/runtime/protocols/index.yaml`
 
@@ -86,7 +94,7 @@
 
 ## 6. 接下来要做什么
 
-如果你刚搭好 `workspace-docs`，建议：
+如果你刚搭好业务文档库，建议：
 
-1. 保留本文件：`workspace-docs/langos/meta/README.md`。
-2. 按实际习惯补充/调整：`workspace-docs/langos/meta/conventions.md`（基础规范）和 `vision.md`（愿景与分层）。
+1. 保留本文件：`langos/meta/README.md`。
+2. 按实际习惯补充/调整：`langos/meta/conventions.md`（基础规范）和 `vision.md`（愿景与分层）。

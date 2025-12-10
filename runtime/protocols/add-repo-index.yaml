@@ -9,17 +9,17 @@ triggers:
   - user_intent: "add_new_project"
   - user_utterance_contains:
       - "添加新项目"
-      - "这个 repo 还没在 workspace-docs 里建说明"
+      - "这个 repo 还没在文档里建说明"
       - "帮我把这个项目加到索引里"
       - "给这个仓库写一套说明"
 
 preconditions:
   - "用户提供或确认仓库目录名（相对 work/）及仓库用途。"
-  - "workspace/repos/INDEX.md 中尚无该仓库条目，或用户明确要更新现有条目。"
+  - "业务文档目录已确定；若有 repos/INDEX.md，则其中尚无该仓库条目，或用户明确要更新现有条目。"
 
 outputs:
-  - "workspace/repos/INDEX.md 的新增/更新片段：仓库名、简述、链接。"
-  - "workspace/repos/<repo>/overview.md 草稿（必选）；可选 architecture.md、ai-notes.md 草稿。"
+  - "业务文档目录下 repos/INDEX.md 的新增/更新片段：仓库名、简述、链接。"
+  - "业务文档目录下 repos/<repo>/overview.md 草稿（必选）；可选 architecture.md、ai-notes.md 草稿。"
   - "待补充信息的 TODO（依赖、数据流、接口等）。"
 
 steps:
@@ -34,7 +34,7 @@ steps:
   - id: check_index
     type: ANALYZE_DOCS
     instruction: >
-      查看 workspace/repos/INDEX.md（如存在），确认是否已有该仓库条目：
+      查看业务文档目录下的 repos/INDEX.md（如存在），确认是否已有该仓库条目：
       - 已存在：说明情况并询问是更新还是跳过；
       - 不存在：记录应新增的显示名、相对路径、1-2 句话描述。
 
@@ -42,9 +42,9 @@ steps:
     type: PLAN_DOCS
     instruction: >
       列出需要创建/更新的文件清单并说明目的，至少包含：
-      - workspace/repos/<repo>/overview.md（必选）；
-      - 可选 workspace/repos/<repo>/architecture.md；
-      - 可选 workspace/repos/<repo>/ai-notes.md。
+      - repos/<repo>/overview.md（必选）；
+      - 可选 repos/<repo>/architecture.md；
+      - 可选 repos/<repo>/ai-notes.md。
       将清单与要点展示给用户确认。
 
   - id: draft_docs
@@ -58,8 +58,8 @@ steps:
   - id: draft_index_snippet
     type: PLAN_INDEX_UPDATE
     instruction: >
-      生成建议追加到 workspace/repos/INDEX.md 的 Markdown 片段：
-      - 使用列表项或表格，包含仓库名、简要描述、链接（workspace/repos/<repo>/overview.md）。
+      生成建议追加到 repos/INDEX.md 的 Markdown 片段：
+      - 使用列表项或表格，包含仓库名、简要描述、链接（repos/<repo>/overview.md）。
       展示给用户确认，不假设已写入。
 
   - id: finalize

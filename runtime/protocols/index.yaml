@@ -30,13 +30,13 @@ protocols:
     name: 添加新项目索引
     file: add-repo-index.yaml
     description: >
-      当 work 目录下出现一个新的 repo，且尚未在 workspace-docs 中建立索引时，
+      当 work 目录下出现一个新的 repo，且尚未在业务文档目录中建立索引时，
       按固定流程为该 repo 建立说明文档和索引。
     triggers:
       intent: add_new_project
       utterance_examples:
         - "添加新项目"
-        - "这个 repo 还没在 workspace-docs 里建说明"
+        - "这个 repo 还没在文档里建说明"
         - "帮我把这个项目加到索引里"
         - "给这个仓库写一套说明"
   - id: add_requirement
@@ -44,7 +44,7 @@ protocols:
     file: add-requirement.yaml
     description: >
       将关于新功能/新需求的对话整理为一份结构化的规格文档，
-      存放到 workspace/specs/ 下，供后续开发和复用。
+      存放到业务文档库的 specs 目录（示例 workspace/specs/），供后续开发和复用。
     triggers:
       intent: add_new_requirement
       utterance_examples:

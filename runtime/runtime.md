@@ -1,7 +1,5 @@
 # 自然语言运行时与确认流程
 
-> 受众：AI 优先；人类可读但非必读。
-
 ## 快速指引：按需读取
 - 始终加载（AI 初始化）：`langos/runtime/guidelines.md`、本文件、`langos/runtime/protocols/index.yaml`。
 - 仅在改“OS”/规范/协议时加载：`langos/meta/vision.md`、`langos/meta/conventions.md`。

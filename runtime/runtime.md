@@ -3,8 +3,9 @@
 ## 快速指引：按需读取
 - 始终加载（AI 初始化）：`langos/runtime/guidelines.md`、本文件、`langos/runtime/protocols/index.yaml`。
 - 仅在改“OS”/规范/协议时加载：`langos/meta/vision.md`、`langos/meta/conventions.md`。
-- 业务任务时按需加载：`workspace/repos/INDEX.md` → 目标仓库文档（overview/architecture/ai-notes 等，若存在）→ 相关需求/项目文档（workspace/specs、workspace/projects）。缺什么再读什么。
+- 业务任务时按需加载：业务文档库的仓库索引（如 repos/INDEX.md）→ 目标仓库文档（overview/architecture/ai-notes 等，若存在）→ 相关需求/项目文档（示例 specs、projects）。缺什么再读什么。
 
+定位：执行层流程说明；对话行为底线见 `langos/runtime/guidelines.md`。  
 本文件描述“接口与执行层”如何把自然语言请求路由到协议，并在需求→方案→编码→评审四个环节保持可控、可审计、可复用。
 
 ## 1. 角色与输入
@@ -16,7 +17,7 @@
 ## 2. 基本流程
 1) 解析与匹配：根据请求在 `index.yaml` 检索 1–3 个候选协议，向用户展示并询问是否采用；无匹配则说明按普通对话继续。  
 2) 确认后执行：用户选择某协议后，按步骤顺序执行，不跳过 ASK/CONFIRM 类节点。  
-3) 缺信息先问：信息不足不得编造，必要假设需标注并复述确认。  
+3) 执行中遵守 `guidelines.md`：缺信息先问、不编造，必要假设需标注并复述确认。  
 4) 产出与收尾：每个阶段产出草稿/片段并征求确认，收尾时总结达成与未决事项。
 
 ## 3. 默认确认闸门（当前覆盖范围）
@@ -37,7 +38,7 @@
 - 可复用模板/检查单：可放在 `langos/runtime/` 下的协议或附录中，按需扩展。
 
 ## 6. 退化路径
-- 若无合适协议或用户选择不用协议，按普通对话处理，但仍遵守：信息不足先问、关键操作前复述并确认、不编造。
+- 若无合适协议或用户选择不用协议，按普通对话处理，但仍遵守 `guidelines.md` 的行为底线。
 
 ## 7. 更新与扩展
 - 新增或调整流程时，优先通过 `add_protocol` 协议设计/更新协议，并同步 `index.yaml`。  

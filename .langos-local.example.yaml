@@ -1,0 +1,4 @@
+# Local config example for LangOS
+# Copy/rename to .langos-local.yaml to override; .langos.yaml is the fallback.
+# doc_root should point to the business/background docs directory relative to the langos repo root (use ../ for sibling).
+doc_root: ../langos-docs/

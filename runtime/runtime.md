@@ -3,6 +3,7 @@
 ## 快速指引：按需读取
 - 始终加载（AI 初始化）：`langos/runtime/guidelines.md`、本文件、`langos/runtime/protocols/index.yaml`（最小集即可运行，无 docs 依赖）。
 - 启动阶段读取配置中的 `doc_roots`（名称→路径的 map，支持相对/绝对路径）与 `active_doc_root`，旧字段 `doc_root` 视为遗留可提示迁移为默认项；仅校验路径存在不预读取。进入业务开发时按 0/1/N 分支：无目录→询问新增（可输入 `name: path`，必要时调用 init-doc-root 创建）；单目录→直接使用并提示名称/路径；多目录→列出名称/路径并标注默认，接受序号或新增 `name: path`，写回配置并设为 active。
+- **doc_root 选定/切换后立即做上下文初始化**：静默读取 doc_root 根 README、`repos/INDEX.md`、对应 repo 概览（如 `repos/<active>.md`）；可选读取 `blueprints/vision.md`、`blueprints/meta-intro.md`、`meta/README.md`、相关 specs 入口以了解项目定位。只建立心智模型、不长篇输出，缺失则提示缺项；后续对话避免重复询问“项目是什么/有哪些 repo”等基础信息。
 - 仅在改“OS”/规范/协议时加载：`runtime/conventions.md`，其余背景文档可参考文档仓（如 `../langos-docs/`），但运行时不依赖其内容。
 - 业务任务时按需加载：业务文档库的仓库索引（如 repos/INDEX.md）→ 目标仓库文档（overview/architecture/ai-notes 等，若存在）→ 相关需求/项目文档（示例 specs、projects）。缺什么再读什么。
 

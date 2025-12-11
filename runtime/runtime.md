@@ -2,7 +2,7 @@
 
 ## 快速指引：按需读取
 - 始终加载（AI 初始化）：`langos/runtime/guidelines.md`、本文件、`langos/runtime/protocols/index.yaml`。
-- 仅在改“OS”/规范/协议时加载：`langos/meta/vision.md`、`langos/meta/conventions.md`。
+- 仅在改“OS”/规范/协议时加载：`runtime/conventions.md`，其余背景文档见文档仓 `../langos-docs/repos/langos/`。
 - 业务任务时按需加载：业务文档库的仓库索引（如 repos/INDEX.md）→ 目标仓库文档（overview/architecture/ai-notes 等，若存在）→ 相关需求/项目文档（示例 specs、projects）。缺什么再读什么。
 
 定位：执行层流程说明；对话行为底线见 `langos/runtime/guidelines.md`。  
@@ -18,7 +18,8 @@
 1) 解析与匹配：根据请求在 `index.yaml` 检索 1–3 个候选协议，向用户展示并询问是否采用；无匹配则说明按普通对话继续。  
 2) 确认后执行：用户选择某协议后，按步骤顺序执行，不跳过 ASK/CONFIRM 类节点。  
 3) 执行中遵守 `guidelines.md`：缺信息先问、不编造，必要假设需标注并复述确认。  
-4) 产出与收尾：每个阶段产出草稿/片段并征求确认，收尾时总结达成与未决事项。
+4) 产出与收尾：每个阶段产出草稿/片段并征求确认，收尾时总结达成与未决事项。  
+5) 如修改协议/路由/规范（内核模式），先在文档仓参考 `governance.md` 等背景说明，写 spec → 草拟协议 → 用 `simulate_protocol` 沙盒验证通过后，再落盘并更新 index。
 
 ## 3. 默认确认闸门（当前覆盖范围）
 - **需求确认**：需求梳理输出的结构化 spec 草稿需人工确认后，才进入方案。  
@@ -34,7 +35,7 @@
 ## 5. 复用资产
 - 协议与索引：`langos/runtime/protocols/*.yaml` 与 `index.yaml`。  
 - 通用行为规范：`langos/runtime/guidelines.md`。  
-- 目录/命名/写作规范：`langos/meta/conventions.md`。  
+- 目录/命名/写作规范：`runtime/conventions.md`。  
 - 可复用模板/检查单：可放在 `langos/runtime/` 下的协议或附录中，按需扩展。
 
 ## 6. 退化路径

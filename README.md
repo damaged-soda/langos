@@ -1,29 +1,14 @@
 # langos
 
-自然语言驱动的编程“操作系统”内核，提供对话规范与协议；业务文档不在此仓。
+自然语言驱动的编程“操作系统”内核代码仓，整体即运行时（协议 + 启动提示 + 必读规范）。高层文档与设计背景在 `../langos-docs/`。
 
-## 目录地图（分层与职责）
-```
-langos/                 ← 本仓，仅存治理/运行时/协议
-├─ meta/                ← 治理层：愿景、规范、迭代方式
-│  ├─ README.md         ← meta 定位说明
-│  ├─ conventions.md    ← 基础规范（命名/写作/AI 底线）
-│  └─ vision.md         ← 愿景与分层定位
-├─ runtime/             ← 接口与执行层：对话约束、运行时、协议
-│  ├─ guidelines.md     ← 对话流程与行为约束
-│  ├─ runtime.md        ← 运行时流程（路由、确认闸门）
-│  ├─ startup.md        ← 加载后给人/AI 的启动提示
-│  └─ protocols/        ← 协议及索引（index.yaml、各 *.yaml）
-└─ （无业务文档）      ← 业务资产放在你指定的业务文档目录/仓库（可自定义）
-```
+## 快速入口（AI 必读）
+- `runtime/startup.md`：加载后模式选择与对话入口。
+- `runtime/guidelines.md`：对话行为底线。
+- `runtime/runtime.md`：运行时流程、确认闸门。
+- `runtime/protocols/index.yaml`：协议索引与触发例句。
+- `runtime/conventions.md`：命名、写作、落盘规范。
 
-## 最小使用路径（人/AI 都可参考）
-1) 获取本仓：`git clone <LANGOS_REPO_URL> langos`（在 `work/` 目录）。
-2) AI 初始化必读：`runtime/guidelines.md`、`runtime/runtime.md`、`runtime/protocols/index.yaml`。
-3) 人/AI 对话入口：按 `runtime/startup.md` 先选模式（学习/治理/业务开发）。
-4) 业务开发时：指定业务文档目录/仓库（可自选，例如已有的 docs 仓或 `workspace/` 目录）；按协议执行需求→方案→编码→评审，关键节点必须确认。
-5) 改规范/协议：阅读 `meta/*` 与目标协议，修改后同步 `runtime/protocols/index.yaml`。
-
-## 其他提示
-- 业务知识/需求/仓库说明请放在独立的业务文档目录/仓库（路径可自定义，保持与代码仓分离即可）。
-- 自然语言协议检索入口：`runtime/protocols/index.yaml`；新增协议需先登记。***
+## 文档库
+- 代码外的愿景/治理/自举说明等背景文档已迁移到 `../langos-docs/`（例如 `repos/langos/overview.md`、`vision.md`、`governance.md`、`specs/README.md`）。
+- 如需自举或理解设计思路，先查阅文档库；执行/落盘时按本仓协议与规范操作，并在改协议前用 `simulate_protocol` 进行沙盒验证。

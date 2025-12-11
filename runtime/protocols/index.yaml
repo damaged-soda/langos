@@ -65,3 +65,17 @@ protocols:
         - "有人改了代码，文档需要更新"
         - "帮我检查这个 repo 的文档"
         - "对照代码把文档修一修"
+  - id: simulate_protocol
+    name: 协议模拟与验收
+    file: simulate_protocol.yaml
+    description: >
+      在不产生实际副作用（不写入磁盘）的情况下，通过扮演“用户”和“系统”双重角色，
+      对内存中的协议草稿或已有的协议进行多轮对话模拟，以验证逻辑是否闭环。
+    triggers:
+      intent: test_protocol
+      utterance_examples:
+        - "模拟运行一下这个协议"
+        - "测试一下新写的指令"
+        - "验证一下刚才的修改"
+        - "跑一遍流程看看有没有 bug"
+        - "沙盒运行"

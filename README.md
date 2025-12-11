@@ -10,5 +10,5 @@
 - `runtime/conventions.md`：命名、写作、落盘规范。
 
 ## 文档库
-- 代码外的愿景/治理/自举说明等背景文档已迁移到 `../langos-docs/`（例如 `repos/langos/overview.md`、`vision.md`、`governance.md`、`specs/README.md`）。
-- 如需自举或理解设计思路，先查阅文档库；执行/落盘时按本仓协议与规范操作，改协议前先明确需求与方案。
+- 代码外的愿景/背景说明等文档已迁移到 `../langos-docs/`（例如 `repos/langos.md`、`blueprints/meta-intro.md`/`blueprints/vision.md`、`specs/langos/README.md`）。
+- 如需治理或理解设计思路，先查阅文档库；执行/落盘时按本仓协议与规范操作，改协议前先明确需求与方案。

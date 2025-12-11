@@ -19,7 +19,7 @@ preconditions:
 
 outputs:
   - "业务文档目录下 repos/INDEX.md 的新增/更新片段：仓库名、简述、链接。"
-  - "业务文档目录下 repos/<repo>/overview.md 草稿（必选）；可选 architecture.md、ai-notes.md 草稿。"
+  - "业务文档目录下 repos/<repo>.md 草稿（包含简介/目录地图/导航）。"
   - "待补充信息的 TODO（依赖、数据流、接口等）。"
 
 steps:
@@ -42,24 +42,23 @@ steps:
     type: PLAN_DOCS
     instruction: >
       列出需要创建/更新的文件清单并说明目的，至少包含：
-      - repos/<repo>/overview.md（必选）；
-      - 可选 repos/<repo>/architecture.md；
-      - 可选 repos/<repo>/ai-notes.md。
+      - repos/<repo>.md（必选，仓库简介与导航）；
+      - 如用户特别需要，可单独创建 architecture/ai-notes 等补充文档，建议注明路径与用途。
       将清单与要点展示给用户确认。
 
   - id: draft_docs
     type: DRAFT_DOCS
     instruction: >
       按确认的清单起草内容，遵守 runtime/conventions.md（中文、结构、命名）。
-      建议覆盖：仓库简介、核心模块、主要依赖/版本、运行/测试入口、
-      与其他 repo 的接口或数据流、当前风险或待办。
+      对于 repos/<repo>.md，建议覆盖：仓库简介、目录地图/主要模块、依赖/版本、运行/测试入口、
+      与其他 repo 的接口或数据流、当前风险或待办、相关文档链接。
       展示草稿请用户审阅。
 
   - id: draft_index_snippet
     type: PLAN_INDEX_UPDATE
     instruction: >
       生成建议追加到 repos/INDEX.md 的 Markdown 片段：
-      - 使用列表项或表格，包含仓库名、简要描述、链接（repos/<repo>/overview.md）。
+      - 使用列表项或表格，包含仓库名、简要描述、链接（repos/<repo>.md）。
       展示给用户确认，不假设已写入。
 
   - id: finalize

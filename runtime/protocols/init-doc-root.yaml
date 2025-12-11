@@ -1,0 +1,86 @@
+id: init_doc_root
+name: 初始化文档目录
+version: 1
+description: >
+  当 doc_root 不存在、为空或缺少关键子目录时，按规范生成文档骨架并更新配置，
+  以便后续需求/索引等协议可落盘。
+
+triggers:
+  - user_intent: "init_doc_root"
+  - user_utterance_contains:
+      - "初始化文档目录"
+      - "doc_root 不存在"
+      - "文档库是空的"
+      - "帮我建文档骨架"
+
+preconditions:
+  - "用户提供或确认 doc_root 路径（相对 langos 仓根）。"
+  - "允许在 doc_root 下创建/补齐目录与文件，不覆盖已有文件。"
+  - "允许更新 .langos-local.yaml（优先）或 .langos.yaml 的 doc_root。"
+
+outputs:
+  - "doc_root 目录状态盘点（不存在/空/已有内容、缺失项列表）。"
+  - "拟创建/补齐的骨架清单与用途说明。"
+  - "各文件中文模板草稿（含 TODO），遵守 conventions。"
+  - "配置写回建议片段（.langos-local.yaml 优先，其次 .langos.yaml）。"
+  - "未决事项与需要人工补充的 TODO。"
+
+steps:
+  - id: clarify_path
+    type: ASK_USER
+    instruction: >
+      确认 doc_root 路径（相对 langos 仓根）及可写权限，询问：
+      1）若目录不存在或为空，是否允许创建骨架；
+      2）若目录已有内容，是否补齐缺失子目录/README（不覆盖已有文件）；
+      3）是否允许更新 .langos-local.yaml（优先）或 .langos.yaml 的 doc_root。
+      用中文小结理解，待用户确认后继续。
+
+  - id: inspect_dir
+    type: ANALYZE_DOCS
+    instruction: >
+      检查 doc_root 目录状态并列出：
+      - 是否存在、是否为空；
+      - 已有子目录/文件列表；
+      - 缺失的关键子目录/README/INDEX（参考 langos-docs/meta/conventions.md）。
+      如遇已有同名文件，标记为“保留，不覆盖”。展示盘点结果给用户确认。
+
+  - id: plan_skeleton
+    type: PLAN_DOCS
+    instruction: >
+      基于盘点结果给出拟创建/补齐清单与用途说明，默认包含：
+      - README.md（库定位与导航）；
+      - repos/README.md、repos/INDEX.md；
+      - specs/README.md；
+      - projects/README.md；
+      - adr/README.md；
+      - domain/README.md；
+      - archive/README.md。
+      明示不覆盖已有文件，冲突需人工决策。请用户确认清单。
+
+  - id: draft_templates
+    type: DRAFT_DOCS
+    instruction: >
+      为确认的清单生成中文模板草稿，遵守 runtime/conventions.md 与 langos-docs/meta/conventions.md。
+      模板应简述目录职责、如何添加新文档，并标注 TODO（如补充索引/规格/ADR 链接）。
+      展示草稿供用户审阅，不直接写入。
+
+  - id: plan_config_update
+    type: PLAN_DOCS
+    instruction: >
+      给出配置写回建议：
+      - 优先 .langos-local.yaml，若不存在则 .langos.yaml；
+      - 建议片段仅包含 doc_root: <path>；
+      - 如已有 doc_root 但不同，标注“需确认覆盖”。
+      将建议展示给用户确认。
+
+  - id: finalize
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      用简要列表确认：1）将写入/创建的文件与路径，2）配置更新内容，3）未决 TODO。
+      仅在用户明确同意后再执行实际写入；如用户选择手动写入，提供可复制片段。
+
+safety:
+  - "全程中文，对路径/命令保持原文。"
+  - "缺信息先问，不得编造 doc_root 内容或覆盖已有文件。"
+  - "未经用户确认不得写入文件或更新配置。"
+  - "路径与命名遵守 runtime/conventions.md 与 langos-docs/meta/conventions.md。"

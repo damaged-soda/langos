@@ -52,3 +52,16 @@ protocols:
         - "有人改了代码，文档需要更新"
         - "帮我检查这个 repo 的文档"
         - "对照代码把文档修一修"
+  - id: init_doc_root
+    name: 初始化文档目录
+    file: init-doc-root.yaml
+    description: >
+      当 doc_root 不存在、为空或缺少关键子目录时，按规范生成文档骨架并更新配置，
+      便于后续需求/索引等协议落盘。
+    triggers:
+      intent: init_doc_root
+      utterance_examples:
+        - "初始化文档目录"
+        - "doc_root 不存在"
+        - "文档库是空的"
+        - "帮我建文档骨架"

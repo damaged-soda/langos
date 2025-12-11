@@ -39,3 +39,8 @@
 ## 8. 实际使用建议
 - 修改文档或协议时，同步更新索引（如 `runtime/protocols/index.yaml` 或 docs 仓索引）。
 - 如文件过多，按子目录或主题拆分，保持可浏览性。
+
+## 9. spec 落盘与引用要求
+- 新建或更新 specs/ 下的规格时，文档头必须标注状态元信息：`Status`（draft/active/implemented/superseded/archived）、`Since`（YYYY-MM），必要时补充 `Supersedes`、`Superseded-by`、`Related-ADR`，正文列出预期将更新的 SOT 文档。
+- 查询或引用规则时先看 SOT（运行时文档 + 当前 doc_root 的 meta/conventions.md、蓝图、术语等），仅在 draft/active 的 spec 中获取“即将落地”的设计输入；implemented/superseded/archived 仅用于历史解释。
+- 发现 SOT 与 spec/ADR 冲突需提醒并建议通过新增/更新 spec + ADR 记录原因，不无痕替换。

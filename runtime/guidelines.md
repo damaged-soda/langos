@@ -49,3 +49,8 @@
 - 不立即推荐协议；先给出模式选择（参考 `runtime/startup.md`）。
 - 全程中文，缺信息先问；协议按需触发，未匹配则回退普通对话。
 - 内核模式修改协议/路由时，可按需查看选定 doc_root 中的蓝图（如 `blueprints/vision.md`）做参考，doc_root 缺省时默认不读，运行时独立可用；写入前先确认需求与方案，再更新索引。
+
+## 6. SOT 优先级与 spec/ADR 使用
+- 查询“当前规则”时的优先级：1) 运行时 SOT（`runtime/conventions.md`、`runtime/guidelines.md`、`runtime/runtime.md`、`runtime/protocols/*.yaml` + `index.yaml`）；2) 当前会话的 doc_root 内 SOT（如 `meta/conventions.md`、`meta/README.md`、`blueprints/meta-intro.md`、`blueprints/vision.md`、`domain/glossary.md`、`repos/*.md`）；3) 进行中的 spec（Status= draft/active）；4) 历史记录（ADR，Status= implemented/superseded/archived 的 spec，archive/）。
+- 引用 spec 前先看 Status：draft/active 可作为“设计输入/即将落地”，implemented/superseded/archived 仅作历史背景，不得当成当前规则。
+- 发现 SOT 与 spec/ADR 冲突时，先提示存在不一致，建议通过新增/更新 spec + ADR 梳理来源；未获用户指定前不要自行假设哪一版正确。

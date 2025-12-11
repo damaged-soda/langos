@@ -52,7 +52,7 @@ steps:
   - id: draft_updates
     type: DRAFT_DOCS
     instruction: >
-      按确认的计划起草文档修改或新增片段，遵守 langos/meta/conventions.md（中文、结构、命名）。
+      按确认的计划起草文档修改或新增片段，遵守 runtime/conventions.md（中文、结构、命名）。
       覆盖已识别的差异点，展示草稿供用户审阅。
 
   - id: finalize
@@ -65,4 +65,4 @@ safety:
   - "对话与输出全程使用中文，代码/路径保持原文。"
   - "不编造未知的业务或实现；信息不足时先提问澄清。"
   - "未经确认不得直接写入或覆盖文件，必要时仅提供片段。"
-  - "路径与命名遵守 langos/meta/conventions.md。"
+  - "路径与命名遵守 runtime/conventions.md。"

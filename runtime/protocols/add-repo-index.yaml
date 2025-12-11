@@ -50,7 +50,7 @@ steps:
   - id: draft_docs
     type: DRAFT_DOCS
     instruction: >
-      按确认的清单起草内容，遵守 langos/meta/conventions.md（中文、结构、命名）。
+      按确认的清单起草内容，遵守 runtime/conventions.md（中文、结构、命名）。
       建议覆盖：仓库简介、核心模块、主要依赖/版本、运行/测试入口、
       与其他 repo 的接口或数据流、当前风险或待办。
       展示草稿请用户审阅。
@@ -72,4 +72,4 @@ safety:
   - "对话与输出全程使用中文，代码/路径保持原文。"
   - "缺少信息时先提问澄清，不得编造仓库细节。"
   - "未经用户确认不得直接写入或覆盖文件。"
-  - "路径与命名遵守 langos/meta/conventions.md，不要求用户提供协议文件路径。"
+  - "路径与命名遵守 runtime/conventions.md，不要求用户提供协议文件路径。"

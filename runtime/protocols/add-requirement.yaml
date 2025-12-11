@@ -2,7 +2,7 @@ id: add_requirement
 name: 添加新需求规格文档
 version: 1
 description: >
-  将关于新功能/需求的对话整理为结构化的规格文档，存放到 workspace/specs/ 下，
+  将关于新功能/需求的对话整理为结构化的规格文档，存放到业务文档库（doc_root）下的 specs/ 目录，
   便于后续开发、协作与复用。
 
 triggers:
@@ -15,10 +15,10 @@ triggers:
 
 preconditions:
   - "用户愿意提供需求的基本信息（目标/范围/涉及 repo 或模块）。"
-  - "允许在 workspace/specs/ 下创建或更新文档。"
+  - "允许在 doc_root/specs/ 下创建或更新文档。"
 
 outputs:
-  - "文档存放路径与文件名建议（遵守 langos/meta/conventions.md）。"
+  - "文档存放路径与文件名建议（遵守 runtime/conventions.md）。"
   - "需求规格草稿：背景/目标、范围/不含、功能/非功能、依赖/影响、接口/数据、验收标准、时间/任务、风险/待决。"
   - "待补信息/待决问题列表。"
 
@@ -34,8 +34,8 @@ steps:
     type: PLAN_DOCS
     instruction: >
       按规范建议存放目录与文件名，例如：
-      - 单 repo：workspace/specs/<repo>/YYYYMM-short-name-spec.md
-      - 跨 repo：workspace/specs/cross-repo/YYYYMM-short-name-spec.md
+      - 单 repo：<doc_root>/specs/<repo>/YYYYMM-short-name-spec.md
+      - 跨 repo：<doc_root>/specs/cross-repo/YYYYMM-short-name-spec.md
       将路径和命名建议展示给用户确认。
 
   - id: outline_sections
@@ -65,7 +65,7 @@ steps:
   - id: draft_spec
     type: DRAFT_DOCS
     instruction: >
-      按确认的框架在中文撰写规格草稿，遵守 langos/meta/conventions.md。
+      按确认的框架在中文撰写规格草稿，遵守 runtime/conventions.md。
       覆盖：背景/目标、范围/不含、功能/非功能、依赖/影响、接口/数据、验收标准、时间/任务、风险/待决。
       展示草稿供用户审阅，必要时迭代。
 
@@ -79,4 +79,4 @@ safety:
   - "对话与输出全程使用中文，代码/路径保持原文。"
   - "缺信息时先提问，不得编造需求细节。"
   - "未经确认不得直接写入或覆盖文件，可先提供片段。"
-  - "路径与命名遵守 langos/meta/conventions.md，不要求用户提供协议文件路径。"
+  - "路径与命名遵守 runtime/conventions.md，不要求用户提供协议文件路径。"

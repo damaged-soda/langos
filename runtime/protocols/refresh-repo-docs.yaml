@@ -1,5 +1,6 @@
 id: refresh_repo_docs
 name: 更新项目说明与修订文档
+role: governance
 version: 1
 description: >
   当某个 repo 的代码发生变化时，对照现有文档与实际实现，

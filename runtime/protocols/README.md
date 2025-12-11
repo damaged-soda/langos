@@ -68,6 +68,16 @@ runtime/protocols/
 - `add_requirement`：将关于新功能/新需求的对话整理为结构化的规格文档。
 - `refresh_repo_docs`：对比现有文档与代码，帮助更新项目文档。
 
+### 协议角色（role）
+
+- 目的：避免将不同层级的流程混在一起，明确哪些协议是内核链路，哪些是用户可选的治理/业务协议。
+- 角色枚举（当前）：
+  - `core`：核心运行时链路（例如 `dispatch_request`），由运行时自动执行，不作为候选协议展示。
+  - `governance`：治理/文档/配置相关协议（如 init_doc_root / add_requirement / add_repo_index / refresh_repo_docs），可被自然语言触发并出现在候选列表。
+  - 预留 `feature`/`business`/`experimental` 等，供未来扩展。
+- 路由规则：匹配候选协议时仅考虑 `role != core`（可选再加 `exposed: true`）；`role = core` 的协议按运行时内置链路执行，不向用户展示。
+- 声明位置：每个协议的 `*.yaml` 中填写 `role`；`index.yaml` 可镜像 `role` 便于路由或分组，权威以协议文件为准。
+
 ---
 
 ## 3. 协议的典型结构（简介）

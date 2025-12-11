@@ -1,5 +1,6 @@
 id: add_repo_index
 name: 添加新项目索引
+role: governance
 version: 1
 description: >
   为 work/ 下新出现、尚未登记的仓库创建索引和基础说明文档，

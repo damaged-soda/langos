@@ -1,5 +1,6 @@
 id: dispatch_request
 name: 请求路由
+role: core
 version: 1
 description: >
   在收到人类请求时，先判定意图并决定是否调用已有协议，

@@ -1,5 +1,6 @@
 id: init_doc_root
 name: 初始化文档目录
+role: governance
 version: 2
 description: >
   当 doc_root 条目不存在、为空或缺少关键子目录时，按规范生成文档骨架并更新配置，

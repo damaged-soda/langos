@@ -1,5 +1,6 @@
 id: add_requirement
 name: 添加新需求规格文档
+role: governance
 version: 3
 description: >
   将用户的一句话想法或详细描述，结合现有项目背景，通过对话引导整理成结构化的需求规格文档，

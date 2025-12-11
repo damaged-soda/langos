@@ -1,17 +1,4 @@
 protocols:
-  - id: add_protocol
-    name: 添加指令
-    file: add-protocol.yaml
-    description: >
-      通过与用户对话，定义、创建或修改一条 AI 协议（YAML 文件），
-      并在用户确认后将该协议登记到 index.yaml 中，供后续自然语言调用使用。
-    triggers:
-      intent: add_new_protocol
-      utterance_examples:
-        - "添加一个新的 AI 协议"
-        - "帮我定义一条新的指令"
-        - "我想新增一种操作流程"
-        - "我们给 AI 多加一个能力"
   - id: dispatch_request
     name: 请求路由
     file: dispatch-request.yaml
@@ -65,17 +52,3 @@ protocols:
         - "有人改了代码，文档需要更新"
         - "帮我检查这个 repo 的文档"
         - "对照代码把文档修一修"
-  - id: simulate_protocol
-    name: 协议模拟与验收
-    file: simulate_protocol.yaml
-    description: >
-      在不产生实际副作用（不写入磁盘）的情况下，通过扮演“用户”和“系统”双重角色，
-      对内存中的协议草稿或已有的协议进行多轮对话模拟，以验证逻辑是否闭环。
-    triggers:
-      intent: test_protocol
-      utterance_examples:
-        - "模拟运行一下这个协议"
-        - "测试一下新写的指令"
-        - "验证一下刚才的修改"
-        - "跑一遍流程看看有没有 bug"
-        - "沙盒运行"

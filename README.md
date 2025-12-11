@@ -11,4 +11,4 @@
 
 ## 文档库
 - 代码外的愿景/治理/自举说明等背景文档已迁移到 `../langos-docs/`（例如 `repos/langos/overview.md`、`vision.md`、`governance.md`、`specs/README.md`）。
-- 如需自举或理解设计思路，先查阅文档库；执行/落盘时按本仓协议与规范操作，并在改协议前用 `simulate_protocol` 进行沙盒验证。
+- 如需自举或理解设计思路，先查阅文档库；执行/落盘时按本仓协议与规范操作，改协议前先明确需求与方案。

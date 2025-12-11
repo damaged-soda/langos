@@ -6,7 +6,7 @@
 
 ```
 已加载 langos（自然语言编程 OS 内核，治理/运行时在本仓，业务文档不在本仓）。
-- 可用协议：add_protocol, dispatch_request, add_repo_index, add_requirement, refresh_repo_docs
+- 可用协议：dispatch_request, add_repo_index, add_requirement, refresh_repo_docs
 
 请选择模式（输入数字即可）：
 1) 学习/讲解：帮我快速讲解项目结构、常用命令或如何使用协议
@@ -43,5 +43,5 @@
     - 把 `langos/meta` 视为“需求与规范库”。
     - 把 `langos/runtime` 视为“核心代码库”。
 - **危险动作**：
-    - 修改 `runtime/protocols/*.yaml` 后，必须执行 `simulate_protocol` 验证，严禁直接热更新。
+    - 修改 `runtime/protocols/*.yaml` 时注意热更新风险，先明确需求与方案再落盘。
     - 修改 `runtime/conventions.md` 需检查对现有协议的破坏性。

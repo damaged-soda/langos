@@ -3,7 +3,7 @@ name: 添加新需求规格文档
 version: 3
 description: >
   将用户的一句话想法或详细描述，结合现有项目背景，通过对话引导整理成结构化的需求规格文档，
-  存放到业务文档库（doc_root）下的 specs/ 目录。
+  存放到当前会话选定的业务文档库（doc_root）下的 specs/ 目录。
 
 triggers:
   - user_intent: "add_new_requirement"
@@ -14,7 +14,7 @@ triggers:
       - "帮我把这个需求梳理成文档"
 
 preconditions:
-  - "doc_root 可访问。"
+  - "doc_root 已选定且可访问（如未选定，先按启动引导的 doc_roots 选择/新增流程确认）。"
 
 outputs:
   - "文档存放路径与文件名建议。"
@@ -25,6 +25,7 @@ steps:
   - id: load_context
     type: ANALYZE_DOCS
     instruction: >
+      确保已选定 doc_root；若未设置或目录不存在，先提示用户选择/新增（接受 `name: path` 并可调用 init-doc-root），再继续。
       在开始提问前，先快速阅读 doc_root 下的基础信息，建立上下文感：
       1. 读取 `repos/INDEX.md`（如有）：了解当前有哪些活跃仓库/模块，以便推断用户可能针对哪个项目。
       2. 读取 `blueprints/vision.md` 或 `README.md`（如有）：了解项目的整体技术风格和愿景。

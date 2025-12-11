@@ -1,4 +1,6 @@
 # Local config example for LangOS
 # Copy/rename to .langos-local.yaml to override; .langos.yaml is the fallback.
-# doc_root should point to the business/background docs directory relative to the langos repo root (use ../ for sibling).
-doc_root: ../langos-docs/
+# doc_roots is a map of business/background docs directories relative to the langos repo root (use ../ for siblings).
+doc_roots:
+  langos-docs: ../langos-docs/
+active_doc_root: langos-docs

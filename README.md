@@ -1,14 +1,37 @@
 # langos
 
-自然语言驱动的编程“操作系统”内核代码仓，整体即运行时（协议 + 启动提示 + 必读规范）。高层文档与设计背景在 `../langos-docs/`。
+> 给 AI 的启动入口：
+> - `runtime/startup.md`：加载后模式选择与对话入口。
+> - `runtime/guidelines.md`：对话行为底线。
+> - `runtime/runtime.md`：运行时流程、确认闸门。
+> - `runtime/protocols/index.yaml`：协议索引与触发例句。
+> - `runtime/conventions.md`：命名、写作、落盘规范。
 
-## 快速入口（AI 必读）
-- `runtime/startup.md`：加载后模式选择与对话入口。
-- `runtime/guidelines.md`：对话行为底线。
-- `runtime/runtime.md`：运行时流程、确认闸门。
-- `runtime/protocols/index.yaml`：协议索引与触发例句。
-- `runtime/conventions.md`：命名、写作、落盘规范。
+langos 是一个以自然语言作为操作界面的“编程操作系统”内核：用**协议（YAML）**将协作流程结构化，使 AI 在「需求 → 方案 → 编码 → 评审」的闭环里保持**可控、可审计、可复用**。
+
+- 本仓提供：运行时最小集（启动提示、对话规范、协议索引与协议定义）。
+- 可选文档库（设计背景/治理蓝图等）通常放在同一工作区的其他 repo（例如 `langos-docs/`），运行时不依赖它也能工作。
+
+## 推荐工作区入口
+建议把 langos 和你要治理/开发的所有 repo 放在同一个 `work/` 下：
+
+```text
+work/
+├─ langos/            ← 本仓：运行时与协议
+├─ repo1/             ← 你要开发/治理的目标仓库
+├─ repo2/
+└─ langos-docs/       ← 可选：高层背景/蓝图/治理文档
+```
+
+这样你可以在 work/ 作为工作区根目录启动 Codex，使其具备跨 repo 的读写与对照能力。
+
+## 快速上手
+```shell
+cd work
+git clone <langos 仓库地址> langos
+codex
+> 加载当前目录下的langos
+```
 
 ## 文档库
-- 代码外的愿景/背景说明等文档已迁移到 `../langos-docs/`（例如 `repos/langos.md`、`blueprints/meta-intro.md`/`blueprints/vision.md`、`specs/langos/README.md`）。
-- 如需治理或理解设计思路，先查阅文档库；执行/落盘时按本仓协议与规范操作，改协议前先明确需求与方案。
+langos已实现自举，如果需要开发/了解设计思路，参考 https://github.com/damaged-soda/langos-docs

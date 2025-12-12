@@ -53,7 +53,7 @@ steps:
     type: PLAN_DOCS
     instruction: >
       基于沟通结果，主动设计文档结构和文件名。
-      参考 `specs/` 下已有的命名习惯给出建议路径（如 specs/<repo>/YYYYMM-feature.md）。
+      参考 `specs/` 下已有的命名习惯给出建议路径（如 specs/<repo>/YYYYMMDD-topic-spec.md），遵守 doc_root 的 `meta/conventions.md`。
       请用户确认结构。
 
   - id: draft_spec

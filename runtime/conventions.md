@@ -19,7 +19,7 @@
 
 ## 4. 命名规范
 - 日期：`YYYYMMDD`，时间 `YYYYMMDD-HHMM`（24 小时制）。
-- 文档文件名：小写连字符，如 `feature-x-spec.md`。
+- 文档文件名：遵循当前 doc_root 的 `meta/conventions.md`；若 doc_root 未定义，spec 默认 `YYYYMMDD-topic-spec.md`（小写连字符）。
 - 协议文件名：`<id>.yaml`，id 用小写字母/数字/下划线，语义清晰。
 
 ## 5. 文档结构与写作方式

@@ -67,6 +67,7 @@ runtime/protocols/
 - `add_repo_index`：为新出现的仓库添加文档索引与说明。
 - `add_requirement`：将关于新功能/新需求的对话整理为结构化的规格文档。
 - `refresh_repo_docs`：对比现有文档与代码，帮助更新项目文档。
+- `doc_ops`：doc_root 文档操作单入口（create/patch/groom），默认 dry-run，写入/移动/重命名前需确认。
 
 ### 协议角色（role）
 

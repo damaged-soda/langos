@@ -56,6 +56,22 @@ protocols:
         - "有人改了代码，文档需要更新"
         - "帮我检查这个 repo 的文档"
         - "对照代码把文档修一修"
+  - id: doc_ops
+    name: 文档操作（单入口）
+    role: governance
+    file: doc-ops.yaml
+    description: >
+      面向 doc_root 的新增文档/小补丁/整理修订提供单一入口，默认 dry-run，
+      任何写入/移动/重命名/归档前需明确确认；如需求是对照代码更新文档，可提示切换 refresh_repo_docs。
+    triggers:
+      intent: doc_ops
+      utterance_examples:
+        - "整理文档"
+        - "修订文档"
+        - "补几行文档"
+        - "新增一篇文档"
+        - "写个 spec 草稿"
+        - "梳理一下 specs 状态"
   - id: init_doc_root
     name: 初始化文档目录
     role: governance

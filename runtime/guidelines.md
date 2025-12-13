@@ -32,17 +32,36 @@
 - 中文沟通：对话与说明全程中文；代码/命令/路径保持原文。
 - 遵守规范：命名/结构遵循 `runtime/conventions.md`；协议检索与执行流程详见 `langos/runtime/runtime.md`。
 
-## 3. 收集信息/表单类交互
+## 3. 文件路由与落盘守卫 (File I/O Guard)
+所有文件操作必须严格遵守“内容-空间映射”原则，严禁跨空间污染：
+
+- **定义空间 (Definition Space)** → 对应 `doc_root`
+  - **原则**：这里存放“是什么”、“为什么做”以及“怎么做的蓝图”。
+  - **特征**：主要格式为 Markdown (.md)。
+  - **内容**：需求规格 (specs/)、架构决策 (adr/)、项目索引 (repos/)、蓝图 (blueprints/)。
+  - **操作**：无论你是在治理哪个项目（甚至是治理 LangOS 内核本身），只要是在**定义**它，就必须操作此目录。
+
+- **实现空间 (Implementation Space)** → 对应 `target_repo`
+  - **原则**：这里存放“实际运行的代码”和“构建产物”。
+  - **特征**：代码文件 (.go, .py, .js 等)、配置文件 (.yaml, .json)、测试用例。
+  - **内容**：源代码、单元测试、运行时配置、CI 脚本。
+  - **操作**：只有在**编写可执行逻辑**时，才操作此目录。
+
+- **落盘前必检 (Pre-flight Check)**：
+  - 在生成任何 `write_file` 指令前，必须检查：*“这个文件的性质属于定义还是实现？目标路径的前缀对了吗？”*
+  - **禁止**将代码写如 `doc_root`，也**禁止**将规格文档散落在 `target_repo` 深处（除非该仓库有特殊约定）。
+
+## 4. 收集信息/表单类交互
 - 当需要用户补全表单/要点时，先询问是否接受“预填草稿”：
   1) 提出基于当前理解的预填内容草稿（中文），供用户预览；
   2) 用户修改/补充后再确认提交；
   3) 未经确认不视为最终提交，不触发后续写入/修改。
 
-## 4. 特殊情况
+## 5. 特殊情况
 - 用户明确表示“不用协议”时，直接走普通对话，但仍遵守上述确认与中文沟通要求。
 - 协议缺失或不可用时，应说明原因并回退到普通对话；必要时提醒补充协议。
 
-## 5. 启动引导（加载 langos 后）
+## 6. 启动引导（加载 langos 后）
 - 先完成基础文件加载：`runtime/guidelines.md`、`runtime/runtime.md`、`runtime/protocols/index.yaml`（最小集即可运行）。
 - 启动时读取仓根配置：优先 `.langos-local.yaml`，其次 `.langos.yaml`，获取 `doc_roots`（名称→路径的 map，相对于 langos 仓根或绝对路径）与 `active_doc_root`（默认名称）。如仅存在旧字段 `doc_root`，视为遗留配置，可提示迁移为 `doc_roots: {default: <path>}` 并设置 `active_doc_root: default`。此阶段仅校验路径存在，不读取或暴露内容。
 - 进入业务开发模式（或后续需要使用文档目录的协议）时的选择分支：
@@ -55,7 +74,7 @@
 - 全程中文，缺信息先问；协议按需触发，未匹配则回退普通对话。
 - 内核模式修改协议/路由时，可按需查看选定 doc_root 中的蓝图（如 `blueprints/vision.md`）做参考，doc_root 缺省时默认不读，运行时独立可用；写入前先确认需求与方案，再更新索引。
 
-## 6. SOT 优先级与 spec/ADR 使用
+## 7. SOT 优先级与 spec/ADR 使用
 - 查询“当前规则”时的优先级：1) 运行时 SOT（`runtime/conventions.md`、`runtime/guidelines.md`、`runtime/runtime.md`、`runtime/protocols/*.yaml` + `index.yaml`）；2) 当前会话的 doc_root 内 SOT（如 `meta/conventions.md`、`meta/README.md`、`blueprints/meta-intro.md`、`blueprints/vision.md`、`domain/glossary.md`、`repos/*.md`）；3) 进行中的 spec（Status= draft/active）；4) 历史记录（ADR，Status= implemented/superseded/archived 的 spec，archive/）。
 - doc_root 结构/命名/元信息的运行时 SOT：`runtime/doc-root-standard.yaml`，用于校验/升级协议，在 doc_root 缺失或多 doc_root 场景下也可对照。
 - 引用 spec 前先看 Status：draft/active 可作为“设计输入/即将落地”，implemented/superseded/archived 仅作历史背景，不得当成当前规则。

@@ -64,6 +64,11 @@ steps:
       - 自动将口语转化为书面语。
       - 对于未确定的细节，根据项目背景（blueprints）给出**合理的默认值**并标记 TODO，减少用户输入负担。
       展示草稿供用户审阅。
+      **【落盘守卫】**：
+      本协议仅涉及“定义空间”（Definition Space）。
+      请严格遵守 `runtime/guidelines.md` 中的“文件路由原则”：
+      所有产出必须指向当前 `active_doc_root` 下的 `specs/` 目录。
+      严禁指向代码仓库。
 
   - id: finalize
     type: CONFIRM_AND_SUMMARIZE

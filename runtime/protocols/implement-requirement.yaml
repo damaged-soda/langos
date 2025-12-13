@@ -56,6 +56,14 @@ steps:
       - 优先给出补丁与测试命令，得到确认后再实际写入；必要时小步提交。
       - 如需更新需求/方案规格状态或链接，生成 doc_root 补丁（例如在需求 spec 中添加方案文档引用，并将 Status 从 active 调整为 implemented）。
       - 记录测试结果与覆盖范围，失败则列出原因与风险。
+      **【落盘守卫 - 双空间分流】**：
+      你正在同时操作两个空间，请根据 `runtime/guidelines.md` 严格分流：
+      1. **写代码/测试** → 属于“实现空间”，写入目标仓库（`target_repo`）。
+      2. **更新Spec状态/引用** → 属于“定义空间”，写入文档库（`active_doc_root`）。
+      
+      **自检示例**：
+      - ❌ 错误：把 `20251214-xxx-spec.md` 写到了 `langos/specs/` (污染代码仓)。
+      - ✅ 正确：把 `20251214-xxx-spec.md` 写到 `langos-docs/specs/`，把 `runtime.md` 写到 `langos/`。
 
   - id: finalize
     type: CONFIRM_AND_SUMMARIZE

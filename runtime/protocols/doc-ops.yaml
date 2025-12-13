@@ -64,6 +64,10 @@ steps:
       - create：输出完整文档草稿（含 TODO），标注预期路径。
       - patch/groom：输出包含上下文锚点的补丁片段；groom 另给归档候选清单和 SOT/状态链路补丁。
       - 不执行任何写入、移动或重命名；如需归档/迁移，仅给出建议与补丁。
+      **【落盘守卫】**：
+      doc_ops 仅作用于“定义空间”（`active_doc_root`）。
+      无论用户的意图多像代码修改（例如“帮我改下文档里的代码片段”），
+      你的修改目标永远是 Markdown 文档，而非源代码文件。
 
   - id: confirm_and_summarize
     type: CONFIRM_AND_SUMMARIZE

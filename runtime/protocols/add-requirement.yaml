@@ -69,6 +69,7 @@ steps:
     instruction: >
       确认并列出最终将写入的文件路径，明确 doc_root 前缀（例如 langos-docs/specs/...），避免裸路径导致落盘到错误目录。
       写入前自检当前工作目录（pwd）与目标路径前缀是否一致；用户确认后才执行写入。
+      若草稿经确认可作为执行输入，提示将 spec Status 从 draft 升为 active，并在落盘时写入。
 
 safety:
   - "对话与输出全程使用中文。"

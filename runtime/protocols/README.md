@@ -68,6 +68,7 @@ runtime/protocols/
 - `add_requirement`：将关于新功能/新需求的对话整理为结构化的规格文档。
 - `refresh_repo_docs`：对比现有文档与代码，帮助更新项目文档。
 - `doc_ops`：doc_root 文档操作单入口（create/patch/groom），默认 dry-run，写入/移动/重命名前需确认。
+- `implement_requirement`：承接已确认的需求规格，完成方案→任务分解→编码/验证的闭环，写入前复述路径并区分 doc_root 与代码仓库。
 
 ### 协议角色（role）
 

@@ -42,6 +42,21 @@ protocols:
         - "帮我写一个需求 spec"
         - "我想做一个新功能"
         - "帮我把这个需求梳理成文档"
+  - id: implement_requirement
+    name: 需求落地（方案→开发→验证）
+    role: feature
+    file: implement-requirement.yaml
+    description: >
+      承接已有需求规格，完成方案制定、任务分解、编码与验证，生成变更与文档更新输出；
+      强调确认闸门，写入前需复述路径并区分 doc_root 与代码仓库。
+    triggers:
+      intent: implement_requirement
+      utterance_examples:
+        - "帮我把这个需求实现"
+        - "按流程落地这个 spec"
+        - "方案开发验证闭环"
+        - "接过 add_requirement 的输出继续做开发"
+        - "推进方案到开发"
   - id: refresh_repo_docs
     name: 更新项目说明与修订文档
     role: governance

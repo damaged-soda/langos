@@ -1,0 +1,69 @@
+id: implement_requirement
+name: 需求落地（方案→开发→验证）
+role: feature
+version: 1
+description: >
+  承接已有需求规格，从 Intake/复核开始，完成方案制定、任务分解、编码与验证，并生成变更与文档更新输出。
+  强化确认闸门：方案未确认不编码，写入前先复述路径与前缀，代码/文档分别按目标仓库与 doc_root 落盘。
+
+triggers:
+  - user_intent: "implement_requirement"
+  - user_utterance_contains:
+      - "帮我把这个需求实现"
+      - "按流程落地这个 spec"
+      - "推进方案到开发"
+      - "接过 add_requirement 的输出继续做开发"
+      - "方案开发验证闭环"
+
+preconditions:
+  - "doc_root 已选定且可访问；需求规格路径明确（通常在 doc_root/specs/<repo>/...）。"
+  - "目标仓库已知且可访问（相对 work/）；如未知，先确认 repo 名与分支/环境。"
+  - "默认不写入代码或文档，需在相应步骤复述路径并经用户确认后才可落盘。"
+
+outputs:
+  - "需求复核结论：目标/范围/不含/验收口径/假设/风险。"
+  - "方案与任务分解：模块/接口/数据流/测试计划/强动作提示。"
+  - "代码与文档变更草稿：按批次列出补丁或 TODO，含测试命令与预期输出。"
+  - "收尾总结：变更说明、测试结果、已/待更新文档、后续 TODO。"
+
+steps:
+  - id: clarify_and_recap
+    type: ASK_USER
+    instruction: >
+      收集并复述关键信息：1) 需求规格路径与状态（draft/active），2) 目标仓库/分支/环境，3) 截止时间或优先级，4) 约束与风险（依赖、兼容、性能/安全要求）。
+      若规格为 draft，确认是否基于当前版本执行；缺项先补齐后再继续。
+
+  - id: read_spec_and_context
+    type: ANALYZE_DOCS
+    instruction: >
+      读取需求规格全文，并参考 doc_root 的 repos/INDEX.md、repos/<repo>.md（如有）建立上下文。
+      用简短要点复述需求目标/范围/验收口径，标记缺口与假设，询问 go/no-go。
+
+  - id: plan_solution_and_tasks
+    type: PLAN_DOCS
+    instruction: >
+      给出方案与任务分解：
+      - 方案：模块/接口/数据流/存储/并发/错误处理、取舍与备选、风险与缓解。
+      - 任务分解：按文件/模块列出改动清单、测试策略（单测/集成/回归）、迁移/兼容方案，标注强动作（破坏性/大规模重构）。
+      征求确认后再进入执行/起草。
+
+  - id: draft_and_execute
+    type: DRAFT_DOCS
+    instruction: >
+      按确认的分解逐步输出可复制的补丁/命令，分批执行：
+      - 写入前复述预期变更与路径：代码/测试走目标仓库前缀（如 `langos/...`），文档走 doc_root 前缀（如 `langos-docs/specs/...`），避免裸 `specs/...`。
+      - 优先给出补丁与测试命令，得到确认后再实际写入；必要时小步提交。
+      - 记录测试结果与覆盖范围，失败则列出原因与风险。
+
+  - id: finalize
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      汇总：方案与任务完成度、已执行的变更与路径、测试结果、文档更新草稿、需求/方案状态调整建议（如 active→implemented）。
+      列出未决事项与后续 TODO；未经用户确认的项保持待办，不擅自落盘。
+
+safety:
+  - "全程中文；路径/命令/代码保持原文。"
+  - "方案未确认不编码；写入前必须复述路径与前缀，区分 doc_root 与代码仓库。"
+  - "缺信息先问，不编造；假设需显式标注并在方案阶段确认。"
+  - "强动作（写入/移动/重命名/大改）需单独确认，默认小步分批。"
+  - "测试失败或未覆盖的风险必须暴露，不默认通过。"

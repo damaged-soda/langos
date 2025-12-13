@@ -61,18 +61,39 @@
 - 用户明确表示“不用协议”时，直接走普通对话，但仍遵守上述确认与中文沟通要求。
 - 协议缺失或不可用时，应说明原因并回退到普通对话；必要时提醒补充协议。
 
-## 6. 启动引导（加载 langos 后）
-- 先完成基础文件加载：`runtime/guidelines.md`、`runtime/runtime.md`、`runtime/protocols/index.yaml`（最小集即可运行）。
-- 启动时读取仓根配置：优先 `.langos-local.yaml`，其次 `.langos.yaml`，获取 `doc_roots`（名称→路径的 map，相对于 langos 仓根或绝对路径）与 `active_doc_root`（默认名称）。如仅存在旧字段 `doc_root`，视为遗留配置，可提示迁移为 `doc_roots: {default: <path>}` 并设置 `active_doc_root: default`。此阶段仅校验路径存在，不读取或暴露内容。
-- 进入业务开发模式（或后续需要使用文档目录的协议）时的选择分支：
+## 6. 启动引导（环境感知与加载）
+
+**Step 0: 内核定位 (Kernel Location)**
+在开始任何工作前，先探测 `langos` 核心库的位置，以适应不同的启动环境：
+1. **检查当前目录**：是否存在 `runtime/protocols/index.yaml`？
+   - 若是 → **内核模式**：当前在 `langos` 仓内。所有内核路径前缀为 `./`。
+2. **检查子目录**：是否存在 `langos/runtime/protocols/index.yaml`？
+   - 若是 → **工作区模式**（推荐）：当前在父级 Workspace。所有内核路径前缀为 `langos/`。
+3. **环境设定**：
+   - 将检测到的路径记为 **`KERNEL_ROOT`**。
+   - 后续读取协议、规范时，务必基于 `KERNEL_ROOT` 拼接路径（例如 `KERNEL_ROOT/runtime/conventions.md`）。
+
+**Step 1: 基础加载与配置**
+- **加载最小集**：读取 `KERNEL_ROOT/runtime/guidelines.md`、`KERNEL_ROOT/runtime/runtime.md`、`KERNEL_ROOT/runtime/protocols/index.yaml`。
+- **读取配置**：优先查找 `.langos-local.yaml`（建议位于工作区根目录），其次 `.langos.yaml`。
+  - 获取 `doc_roots`（名称→路径的 map，支持相对路径）与 `active_doc_root`。
+  - 如仅存在旧字段 `doc_root`，视为遗留配置，可提示迁移为 `doc_roots: {default: <path>}` 并设置 `active_doc_root: default`。
+  - 此阶段仅校验路径存在，不读取或暴露内容。
+
+**Step 2: 模式与上下文初始化**
+- **进入业务开发模式（或后续需要使用文档目录的协议）时的选择分支**：
   - 无 `doc_roots`：提示是否新增，允许输入 `name: path`，必要时调用 init-doc-root 创建骨架。
   - 单一 `doc_root`：直接使用并向用户简要提示名称/路径。
   - 多个 `doc_root`：列出名称+路径，标注 `active_doc_root` 作为默认，接受序号选择或输入新 `name: path`，新增后写回配置并设为 active。
-  选择结果在会话内生效，并写回 `.langos-local.yaml` 的 `doc_roots` 与 `active_doc_root`。
-- doc_root 选定/切换后立即做一次轻量上下文初始化：静默读取 doc_root 根 README、`repos/INDEX.md`、对应 repo 概览（如 `repos/<active>.md`）；可选读取 `blueprints/vision.md`、`blueprints/meta-intro.md`、`meta/README.md`、相关 specs 入口以了解项目定位。只建立心智，不长篇输出，缺项则提示；后续对话避免重复询问“项目是什么/有哪些 repo”等基础信息。
-- 不立即推荐协议；先给出模式选择（参考 `runtime/startup.md`）。
-- 全程中文，缺信息先问；协议按需触发，未匹配则回退普通对话。
-- 内核模式修改协议/路由时，可按需查看选定 doc_root 中的蓝图（如 `blueprints/vision.md`）做参考，doc_root 缺省时默认不读，运行时独立可用；写入前先确认需求与方案，再更新索引。
+  - 选择结果在会话内生效，并写回 `.langos-local.yaml` 的 `doc_roots` 与 `active_doc_root`。
+- **doc_root 选定/切换后立即做一次轻量上下文初始化**：
+  - 静默读取 doc_root 根 README、`repos/INDEX.md`、对应 repo 概览（如 `repos/<active>.md`）。
+  - 可选读取 `blueprints/vision.md`、`blueprints/meta-intro.md`、`meta/README.md`、相关 specs 入口以了解项目定位。
+  - 只建立心智，不长篇输出，缺项则提示；后续对话避免重复询问“项目是什么/有哪些 repo”等基础信息。
+- **交互策略**：
+  - 不立即推荐协议；先给出模式选择（参考 `runtime/startup.md`）。
+  - 全程中文，缺信息先问；协议按需触发，未匹配则回退普通对话。
+  - 内核模式修改协议/路由时，可按需查看选定 doc_root 中的蓝图（如 `blueprints/vision.md`）做参考，doc_root 缺省时默认不读，运行时独立可用；写入前先确认需求与方案，再更新索引。
 
 ## 7. SOT 优先级与 spec/ADR 使用
 - 查询“当前规则”时的优先级：1) 运行时 SOT（`runtime/conventions.md`、`runtime/guidelines.md`、`runtime/runtime.md`、`runtime/protocols/*.yaml` + `index.yaml`）；2) 当前会话的 doc_root 内 SOT（如 `meta/conventions.md`、`meta/README.md`、`blueprints/meta-intro.md`、`blueprints/vision.md`、`domain/glossary.md`、`repos/*.md`）；3) 进行中的 spec（Status= draft/active）；4) 历史记录（ADR，Status= implemented/superseded/archived 的 spec，archive/）。

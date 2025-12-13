@@ -1,7 +1,7 @@
 id: add_requirement
 name: 添加新需求规格文档
 role: governance
-version: 3
+version: 4
 description: >
   将用户的一句话想法或详细描述，结合现有项目背景，通过对话引导整理成结构化的需求规格文档，
   存放到当前会话选定的业务文档库（doc_root）下的 specs/ 目录。
@@ -21,6 +21,7 @@ outputs:
   - "文档存放路径与文件名建议。"
   - "结构化的需求规格草稿。"
   - "待确认的细节或 TODO。"
+  - "需求梳理完成的确认与后续执行建议（是否切换 implement_requirement）。"
 
 steps:
   - id: load_context
@@ -70,6 +71,7 @@ steps:
       确认并列出最终将写入的文件路径，明确 doc_root 前缀（例如 langos-docs/specs/...），避免裸路径导致落盘到错误目录。
       写入前自检当前工作目录（pwd）与目标路径前缀是否一致；用户确认后才执行写入。
       若草稿经确认可作为执行输入，提示将 spec Status 从 draft 升为 active，并在落盘时写入。
+      明确告知“add_requirement 已完成”，询问是否启动 implement_requirement（以本次 spec 为输入）；在用户同意前不自动切换。
 
 safety:
   - "对话与输出全程使用中文。"

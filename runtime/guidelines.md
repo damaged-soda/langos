@@ -52,5 +52,6 @@
 
 ## 6. SOT 优先级与 spec/ADR 使用
 - 查询“当前规则”时的优先级：1) 运行时 SOT（`runtime/conventions.md`、`runtime/guidelines.md`、`runtime/runtime.md`、`runtime/protocols/*.yaml` + `index.yaml`）；2) 当前会话的 doc_root 内 SOT（如 `meta/conventions.md`、`meta/README.md`、`blueprints/meta-intro.md`、`blueprints/vision.md`、`domain/glossary.md`、`repos/*.md`）；3) 进行中的 spec（Status= draft/active）；4) 历史记录（ADR，Status= implemented/superseded/archived 的 spec，archive/）。
+- doc_root 结构/命名/元信息的运行时 SOT：`runtime/doc-root-standard.yaml`，用于校验/升级协议，在 doc_root 缺失或多 doc_root 场景下也可对照。
 - 引用 spec 前先看 Status：draft/active 可作为“设计输入/即将落地”，implemented/superseded/archived 仅作历史背景，不得当成当前规则。
 - 发现 SOT 与 spec/ADR 冲突时，先提示存在不一致，建议通过新增/更新 spec + ADR 梳理来源；未获用户指定前不要自行假设哪一版正确。

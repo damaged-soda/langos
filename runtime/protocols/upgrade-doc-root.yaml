@@ -1,0 +1,76 @@
+id: upgrade_doc_root
+name: 文档库升级/修复
+role: governance
+version: 1
+description: >
+  将 doc_root 修复或升级到当前版本规范：补全必备目录/文件、命名、元信息和版本号，
+  依据升级指引生成补丁，所有写入需明确确认。
+  规则来源：runtime/doc-root-standard.yaml（运行时侧 SOT），必要时参考 doc_root 内的最新规范/升级指引。
+
+triggers:
+  - user_intent: "upgrade_doc_root"
+  - user_utterance_contains:
+      - "升级文档库"
+      - "修复 doc_root"
+      - "补齐文档库结构"
+      - "对齐文档库规范"
+      - "文档库版本落后"
+
+preconditions:
+  - "doc_root 已选定且可访问；如未选定，先按启动引导选择/新增（可调用 init_doc_root）。"
+  - "建议参考最新规范（如 specs/langos/20251213-doc-root-versioning-and-validation-spec.md），如缺失需先确认目标规则。"
+
+outputs:
+  - "当前/目标版本号与来源。"
+  - "升级/修复计划与需要的文件/段落补丁。"
+  - "强确认清单（写入/新增文件/重命名等）。"
+  - "执行结果或待办。"
+
+steps:
+  - id: gather_context
+    type: ANALYZE_DOCS
+    instruction: >
+      确认 doc_root 可用；读取根 README 的 Doc Root Version / Last Updated。
+      若缺失或落后，记录现状；加载 runtime/doc-root-standard.yaml 作为规则源，必要时查找 doc_root 内最新的 doc_root 规范/升级指引。
+      如无法定位规则，需先向用户确认目标版本与规则来源后再继续。
+
+  - id: choose_strategy
+    type: ASK_USER
+    instruction: >
+      基于版本状态提出选项并征求授权：
+      - 版本缺失/落后：说明将按当前规则补齐结构、命名、元信息并写入版本段落，是否继续？
+      - 版本一致：仅修复差异（如缺文件/元信息缺失），是否继续？
+      - 版本高于已知规则：提示风险，需人工确认目标规则后再动手。
+      所有写入需明确同意；默认不写入。
+
+  - id: plan_changes
+    type: PLAN_DOCS
+    instruction: >
+      生成具体行动列表并标注强确认：
+      - 必备文件/目录：README 版本段落、meta/README.md、meta/conventions.md、repos/INDEX.md、repos/<name>.md、specs/README.md、必要的 specs/<repo>/README.md、blueprints/meta-intro.md、blueprints/vision.md；确保 projects/、adr/、domain/、archive/ 目录存在。
+      - 命名与元信息：specs/ADR 文件命名规则，顶部 Status/Since。
+      - 升级指引动作：如需要从旧版本迁移，列出具体调整（目录/命名/元信息补齐），引用升级指引来源。
+      输出计划时标注需要写入/新建/重命名的项，等待确认。
+
+  - id: draft_patches
+    type: DRAFT_DOCS
+    instruction: >
+      基于计划生成可执行补丁/片段（保持 dry-run）：
+      - README 版本段落示例（Doc Root Version / Last Updated）。
+      - 缺失文件的最小骨架（可含 TODO，占位即可）。
+      - 元信息补丁模板（Status/Since）。
+      - 其他命名或内容修正的示例补丁。
+      仅输出补丁，不直接写入。
+
+  - id: confirm_and_apply
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      汇总版本状态、计划与补丁，列出强确认项（写入/新增/重命名）。
+      用户确认后才允许写入；若未获授权，保留补丁供手动应用。
+      推荐后续执行 validate_doc_root 复核。
+
+safety:
+  - "全程中文，对路径/命名保持原文。"
+  - "未经明确同意不得写入/重命名/移动任何文件。"
+  - "遵守 runtime/conventions.md 及 doc_root/meta/conventions.md。"
+  - "如规则来源不明或版本高于已知规则，先澄清再动作。"

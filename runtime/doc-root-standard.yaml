@@ -1,0 +1,37 @@
+standard_version: "v0.0.0"
+doc_root_version_field:
+  file: "README.md"
+  keys:
+    - "Doc Root Version"
+    - "Last Updated"
+  version_format: "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+required_files:
+  - "README.md"
+  - "meta/README.md"
+  - "meta/conventions.md"
+  - "repos/INDEX.md"
+  - "specs/README.md"
+  - "blueprints/meta-intro.md"
+  - "blueprints/vision.md"
+required_directories:
+  - "projects/"
+  - "adr/"
+  - "domain/"
+  - "archive/"
+repo_files:
+  pattern: "repos/<name>.md"
+  source_hint: "repos/INDEX.md"
+specs_readme_per_repo:
+  pattern: "specs/<repo>/README.md"
+naming_rules:
+  specs: "^[0-9]{8}-[a-z0-9-]+(-(design|solution))?-spec\\.md$"
+  adr: "^[0-9]{8}-[a-z0-9-]+\\.md$"
+  projects_dir: "^[0-9]{6}-[a-z0-9-]+/$"
+metadata_rules:
+  required_keys:
+    - "Status"
+    - "Since"
+  optional_keys:
+    - "Supersedes"
+    - "Superseded-by"
+    - "Related-ADR"

@@ -101,3 +101,33 @@ protocols:
         - "doc_root 不存在"
         - "文档库是空的"
         - "帮我建文档骨架"
+  - id: validate_doc_root
+    name: 文档库校验
+    role: governance
+    file: validate-doc-root.yaml
+    description: >
+      按 doc_root 版本规范校验目录、命名与元信息，默认信任已有版本号；
+      仅在版本号缺失或用户请求时执行全量检查，输出缺失/异常与修复建议。
+    triggers:
+      intent: validate_doc_root
+      utterance_examples:
+        - "校验文档库"
+        - "验证 doc_root"
+        - "检查文档库版本"
+        - "检查文档结构"
+        - "doc_root 版本号缺失"
+  - id: upgrade_doc_root
+    name: 文档库升级/修复
+    role: governance
+    file: upgrade-doc-root.yaml
+    description: >
+      将 doc_root 修复或升级到当前版本规范：补全必备目录/文件、命名、元信息和版本号，
+      依据升级指引生成补丁，所有写入需明确确认。
+    triggers:
+      intent: upgrade_doc_root
+      utterance_examples:
+        - "升级文档库"
+        - "修复 doc_root"
+        - "补齐文档库结构"
+        - "对齐文档库规范"
+        - "文档库版本落后"

@@ -1,0 +1,63 @@
+id: validate_doc_root
+name: 文档库校验
+role: governance
+version: 1
+description: >
+  按 doc_root 版本规范校验目录/命名/元信息，默认信任已有版本号；
+  仅在版本号缺失或用户请求时执行全量检查，输出缺失/异常与修复建议。
+  校验规则来源：runtime/doc-root-standard.yaml（运行时侧 SOT），必要时可对照 doc_root 内规格。
+
+triggers:
+  - user_intent: "validate_doc_root"
+  - user_utterance_contains:
+      - "校验文档库"
+      - "验证 doc_root"
+      - "检查文档库版本"
+      - "检查文档结构"
+      - "doc_root 版本号缺失"
+
+preconditions:
+  - "doc_root 已选定且可访问；如未选定，先按启动引导选择/新增（可调用 init_doc_root）。"
+  - "操作可能耗时，默认不全量扫描；仅在用户确认或版本号缺失时执行。"
+
+outputs:
+  - "doc_root 版本号读取结果（有/无、值）。"
+  - "校验范围说明（是否执行全量扫描）。"
+  - "缺失/异常清单与修复建议。"
+  - "是否建议触发 upgrade_doc_root。"
+
+steps:
+  - id: read_version
+    type: ANALYZE_DOCS
+    instruction: >
+      确保 doc_root 可用，读取根 README 中的 Doc Root Version / Last Updated。
+      记录版本号状态：存在/缺失/格式异常；默认信任已存在的版本号，不做全量检查。
+      加载 runtime/doc-root-standard.yaml 作为规则源，记录规则版本。
+
+  - id: decide_scan
+    type: ASK_USER
+    instruction: >
+      根据版本号状态与用户意愿决定是否执行全量校验：
+      - 版本号存在：说明默认信任，可选“执行全量检查”或“跳过扫描”。
+      - 版本号缺失/格式异常：提示需要全量检查才能确认结构与元信息，询问是否继续。
+      标注全量扫描可能耗时。
+
+  - id: scan_structure
+    type: ANALYZE_DOCS
+    instruction: >
+      若用户确认扫描，按当前规范检查结构与格式（不改写）：
+      1) 按 runtime/doc-root-standard.yaml 中的 required_files / required_directories / repo_files / specs_readme_per_repo 检查存在性。
+      2) 命名规则：按 naming_rules（specs/ADR/项目目录）。
+      3) 元信息：按 metadata_rules（Status、Since 作为必填）。
+      输出缺失项、命名不符、元信息缺失的清单，不执行写入。
+
+  - id: summarize
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      汇总：版本读取结果、是否执行了扫描、发现的问题与建议。
+      若存在缺失/异常或版本落后/缺失，建议是否调用 upgrade_doc_root；不自动切换，等待用户决定。
+
+safety:
+  - "全程中文，对路径保持原文。"
+  - "未经用户确认不得执行全量扫描，扫描也不写入。"
+  - "遵守 runtime/conventions.md 和 doc_root/meta/conventions.md 的命名与结构要求。"

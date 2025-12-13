@@ -6,6 +6,7 @@
 - **doc_root 选定/切换后立即做上下文初始化**：静默读取 doc_root 根 README、`repos/INDEX.md`、对应 repo 概览（如 `repos/<active>.md`）；可选读取 `blueprints/vision.md`、`blueprints/meta-intro.md`、`meta/README.md`、相关 specs 入口以了解项目定位。只建立心智模型、不长篇输出，缺失则提示缺项；后续对话避免重复询问“项目是什么/有哪些 repo”等基础信息。
 - 仅在改“OS”/规范/协议时加载：`runtime/conventions.md`，其余背景文档可参考文档仓（如 `../langos-docs/`），但运行时不依赖其内容。
 - 业务任务时按需加载：业务文档库的仓库索引（如 repos/INDEX.md）→ 目标仓库文档（overview/architecture/ai-notes 等，若存在）→ 相关需求/项目文档（示例 specs、projects）。缺什么再读什么。
+- doc_root 结构/命名/元信息的 SOT 位于 `runtime/doc-root-standard.yaml`，供校验/升级协议使用，不依赖 doc_root 内容。
 
 定位：执行层流程说明；对话行为底线见 `langos/runtime/guidelines.md`。  
 本文件描述“接口与执行层”如何把自然语言请求路由到协议，并在需求→方案→编码→评审四个环节保持可控、可审计、可复用。治理任务视为业务流程的特例，沿用相同阶段，仅增加文档来源与热改风险的提示与守卫。

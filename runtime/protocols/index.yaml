@@ -131,3 +131,17 @@ protocols:
         - "补齐文档库结构"
         - "对齐文档库规范"
         - "文档库版本落后"
+  - id: generate_repo_conventions
+    name: 生成仓库代码规范（conventions）
+    role: governance
+    file: generate-repo-conventions.yaml
+    description: >
+      为指定 repo 生成/更新一份代码规范文档（SOT），默认落点为目标 repo 内 doc/conventions.md；
+      默认 dry-run，写入前需明确确认目标路径与变更范围。
+    triggers:
+      intent: generate_repo_conventions
+      utterance_examples:
+        - "为这个仓库生成代码规范"
+        - "生成代码风格"
+        - "整理一下这个 repo 的代码规范"
+        - "写一份 conventions"

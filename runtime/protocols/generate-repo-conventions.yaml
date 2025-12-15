@@ -1,0 +1,78 @@
+id: generate_repo_conventions
+name: 生成仓库代码规范（conventions）
+role: governance
+version: 1
+description: >
+  为指定 repo 生成/更新一份代码规范文档（SOT），包含 MUST/SHOULD/MUST NOT/Examples/PR Checklist。
+  默认 dry-run，写入前必须明确确认目标路径与变更范围；默认落点为目标 repo 内 `doc/conventions.md`。
+
+triggers:
+  - user_intent: "generate_repo_conventions"
+  - user_utterance_contains:
+      - "生成代码规范"
+      - "生成代码风格"
+      - "整理代码规范"
+      - "写一份代码规范"
+      - "补一份 conventions"
+      - "为这个仓库写规范"
+
+preconditions:
+  - "用户提供目标 repo（相对 work/，例如 study-path-backend/）"
+  - "目标 repo 可访问且可写（写入前仍需用户确认）"
+
+outputs:
+  - "规范草稿（dry-run，默认不落盘）"
+  - "待写入文件路径清单（默认 <repo>/doc/conventions.md）与导航更新建议（如 repos/<repo>.md 或 README 链接）"
+  - "强确认清单（写入/覆盖/迁移）"
+
+steps:
+  - id: clarify
+    type: ASK_USER
+    instruction: >
+      澄清并确认：
+      1）目标 repo（相对 work/）；
+      2）语言/框架；
+      3）规范落点（默认 `<repo>/doc/conventions.md`，可改为 `<repo>/docs/conventions.md`）；
+      4）本次希望优先规范的切面（例如：Controller/API 风格、Service/Repository 分层、日志与错误、测试策略等）。
+      说明默认 dry-run，不写入；获得用户确认后继续。
+
+  - id: scan_repo
+    type: ANALYZE_REPO
+    instruction: >
+      读取并归纳 repo 现状（不长篇输出，只给要点与证据）：
+      - 目录结构与主要模块；
+      - Controller 路由风格（资源风格/动词风格、下划线/连字符等）；
+      - 响应封装方式（ResponseWrapper/SimpleResponse 等）；
+      - Service/Repository 依赖边界（controller 是否直连 repository）；
+      - 是否存在 formatter/linter/CI 或约定（如 Maven/ESLint/Prettier）。
+      对不确定处标注 TODO，不得编造。
+
+  - id: draft_conventions
+    type: DRAFT_DOCS
+    instruction: >
+      按固定模板输出规范草稿（默认路径 `<repo>/doc/conventions.md`）：
+      1) 适用范围
+      2) MUST（硬规则：可检查）
+      3) SHOULD（推荐做法）
+      4) MUST NOT（禁止）
+      5) Examples（Good/Bad，短片段）
+      6) PR Checklist
+      需体现“与现状一致/向目标态演进”的边界：对存量不强制一刀切；对新增/改动强约束。
+
+  - id: confirm_write
+    type: CONFIRM_AND_SUMMARIZE
+    instruction: >
+      列出将写入/更新的文件路径与改动摘要；提醒强确认项（写入/覆盖/迁移）；
+      询问是否执行写入。未确认前不得落盘。
+
+  - id: write
+    type: APPLY_DOCS
+    instruction: >
+      仅在用户确认后执行写入/更新：
+      - 写入或更新 `<repo>/doc/conventions.md`（或用户确认的路径）；
+      - 如用户需要，补充导航入口（例如 repos/<repo>.md 或 repo README）。
+
+safety:
+  - "默认 dry-run，未经确认不得写入/覆盖任何文件。"
+  - "不编造 repo 现状；不确定之处必须提问或标注 TODO。"
+  - "不强制引入 lint/format 工具，只给建议。"

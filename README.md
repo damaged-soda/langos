@@ -1,5 +1,7 @@
 # langos
 
+由于AI注意力不足，本项目失败了
+
 > 给 AI 的启动入口：
 > - `runtime/startup.md`：加载后模式选择与对话入口。
 > - `runtime/guidelines.md`：对话行为底线。
